@@ -11,6 +11,7 @@ const menuItems = [
     { label: 'Home', link: '/' },
     { label: 'About', link: '/about' },
     { label: 'Contact', link: '/contact' },
+    { label: 'List Pets', link: '/listpets' },
 ];
 
 const useStyles = makeStyles({
