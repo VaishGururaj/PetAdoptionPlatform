@@ -1,0 +1,85 @@
+Index: src/App.js
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import './App.css';\nimport Navbar from \"./components/Navbar/Navbar\"\nimport { Routes, Route } from \"react-router-dom\";\nimport About from \"./components/About/About\";\nimport ListPets from \"./components/Listpets/Listpets\";\nimport PetDetails from \"./components/PetDetails/PetDetails\"\n\nfunction App() {\n    return (\n        <div className=\"App\">\n                <Navbar />\n                <Routes>\n                    <Route path=\"/about\" element={<About />} />\n                    <Route path=\"/listpets\" element={<ListPets />} />\n                    <Route path=\"/pet/:id\" element={<PetDetails />} />\n                </Routes>\n        </div>\n    );\n}\n\nexport default App;\n
+===================================================================
+diff --git a/src/App.js b/src/App.js
+--- a/src/App.js	
++++ b/src/App.js	
+@@ -4,6 +4,7 @@
+ import About from "./components/About/About";
+ import ListPets from "./components/Listpets/Listpets";
+ import PetDetails from "./components/PetDetails/PetDetails"
++import Contact from "./components/Contact/Contact";
+ 
+ function App() {
+     return (
+@@ -13,6 +14,7 @@
+                     <Route path="/about" element={<About />} />
+                     <Route path="/listpets" element={<ListPets />} />
+                     <Route path="/pet/:id" element={<PetDetails />} />
++                    <Route path="/contact" element={<Contact />} />
+                 </Routes>
+         </div>
+     );
+Index: package-lock.json
+===================================================================
+diff --git a/package-lock.json b/package-lock.json
+--- a/package-lock.json	
++++ b/package-lock.json	
+@@ -22,6 +22,7 @@
+         "react-dom": "^18.2.0",
+         "react-router-dom": "^6.22.3",
+         "react-scripts": "5.0.1",
++        "react-scroll": "^1.9.0",
+         "styled-components": "^6.1.8",
+         "web-vitals": "^2.1.4"
+       }
+@@ -13183,6 +13184,11 @@
+       "resolved": "https://registry.npmjs.org/lodash.sortby/-/lodash.sortby-4.7.0.tgz",
+       "integrity": "sha512-HDWXG8isMntAyRF5vZ7xKuEvOhT4AhlRt/3czTSjvGUxjYCBVRQY48ViDHyfYz9VIoBkW4TMGQNapx+l3RUwdA=="
+     },
++    "node_modules/lodash.throttle": {
++      "version": "4.1.1",
++      "resolved": "https://registry.npmjs.org/lodash.throttle/-/lodash.throttle-4.1.1.tgz",
++      "integrity": "sha512-wIkUCfVKpVsWo3JSZlc+8MB5it+2AN5W8J7YVMST30UrvcQNZ1Okbj+rbVniijTWE6FGYy4XJq/rHkas8qJMLQ=="
++    },
+     "node_modules/lodash.uniq": {
+       "version": "4.5.0",
+       "resolved": "https://registry.npmjs.org/lodash.uniq/-/lodash.uniq-4.5.0.tgz",
+@@ -15917,6 +15923,19 @@
+         }
+       }
+     },
++    "node_modules/react-scroll": {
++      "version": "1.9.0",
++      "resolved": "https://registry.npmjs.org/react-scroll/-/react-scroll-1.9.0.tgz",
++      "integrity": "sha512-mamNcaX9Ng+JeSbBu97nWwRhYvL2oba+xR2GxvyXsbDeGP+gkYIKZ+aDMMj/n20TbV9SCWm/H7nyuNTSiXA6yA==",
++      "dependencies": {
++        "lodash.throttle": "^4.1.1",
++        "prop-types": "^15.7.2"
++      },
++      "peerDependencies": {
++        "react": "^15.5.4 || ^16.0.0 || ^17.0.0 || ^18.0.0",
++        "react-dom": "^15.5.4 || ^16.0.0 || ^17.0.0 || ^18.0.0"
++      }
++    },
+     "node_modules/react-transition-group": {
+       "version": "4.4.5",
+       "resolved": "https://registry.npmjs.org/react-transition-group/-/react-transition-group-4.4.5.tgz",
+Index: package.json
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>{\n  \"name\": \"pet\",\n  \"version\": \"0.1.0\",\n  \"private\": true,\n  \"dependencies\": {\n    \"@emotion/react\": \"^11.11.4\",\n    \"@emotion/styled\": \"^11.11.5\",\n    \"@fontsource/roboto\": \"^5.0.12\",\n    \"@mui/icons-material\": \"^5.15.14\",\n    \"@mui/material\": \"^5.15.14\",\n    \"@mui/styled-engine-sc\": \"^6.0.0-alpha.18\",\n    \"@mui/styles\": \"^5.15.14\",\n    \"@testing-library/jest-dom\": \"^5.17.0\",\n    \"@testing-library/react\": \"^13.4.0\",\n    \"@testing-library/user-event\": \"^13.5.0\",\n    \"react\": \"^18.2.0\",\n    \"react-dom\": \"^18.2.0\",\n    \"react-router-dom\": \"^6.22.3\",\n    \"react-scripts\": \"5.0.1\",\n    \"styled-components\": \"^6.1.8\",\n    \"web-vitals\": \"^2.1.4\"\n  },\n  \"scripts\": {\n    \"start\": \"react-scripts start\",\n    \"build\": \"react-scripts build\",\n    \"test\": \"react-scripts test\",\n    \"eject\": \"react-scripts eject\"\n  },\n  \"eslintConfig\": {\n    \"extends\": [\n      \"react-app\",\n      \"react-app/jest\"\n    ]\n  },\n  \"browserslist\": {\n    \"production\": [\n      \">0.2%\",\n      \"not dead\",\n      \"not op_mini all\"\n    ],\n    \"development\": [\n      \"last 1 chrome version\",\n      \"last 1 firefox version\",\n      \"last 1 safari version\"\n    ]\n  }\n}\n
+===================================================================
+diff --git a/package.json b/package.json
+--- a/package.json	
++++ b/package.json	
+@@ -17,6 +17,7 @@
+     "react-dom": "^18.2.0",
+     "react-router-dom": "^6.22.3",
+     "react-scripts": "5.0.1",
++    "react-scroll": "^1.9.0",
+     "styled-components": "^6.1.8",
+     "web-vitals": "^2.1.4"
+   },

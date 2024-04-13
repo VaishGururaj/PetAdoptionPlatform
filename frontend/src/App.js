@@ -1,19 +1,18 @@
-import './App.css';
-import Navbar from "./components/Navbar/Navbar"
-import { Routes, Route } from "react-router-dom";
-import About from "./components/About/About";
-import ListPets from "./components/Listpets/Listpets";
-import PetDetails from "./components/PetDetails/PetDetails"
+import React from 'react';
+import {Routes, Route, Navigate} from 'react-router-dom';
+import LoginPage from "./components/LoginPage/LoginPage";
+import SignUpPage from "./components/SignUpPage/SignUpPage";
+
 
 function App() {
+
     return (
         <div className="App">
-                <Navbar />
-                <Routes>
-                    <Route path="/about" element={<About />} />
-                    <Route path="/listpets" element={<ListPets />} />
-                    <Route path="/pet/:id" element={<PetDetails />} />
-                </Routes>
+            <Routes>
+                <Route path = "/login" element={<LoginPage/>}></Route>
+                <Route path = "/signup" element={<SignUpPage/>}></Route>
+                <Route path="/" element={<Navigate to="/login" />} />
+            </Routes>
         </div>
     );
 }

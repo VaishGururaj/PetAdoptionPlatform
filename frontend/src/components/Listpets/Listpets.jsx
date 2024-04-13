@@ -33,6 +33,7 @@ const useStyles = makeStyles({
     formControl: {
         margin: 20,
         minWidth: 120,
+        justifyContent: "center"
     },
 });
 
