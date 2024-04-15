@@ -1,0 +1,193 @@
+Index: frontend/src/App.js
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import React from 'react';\nimport {Routes, Route, Navigate} from 'react-router-dom';\nimport LoginPage from \"./components/LoginPage/LoginPage\";\nimport SignUpPage from \"./components/SignUpPage/SignUpPage\";\n\n\nfunction App() {\n\n    return (\n        <div className=\"App\">\n            <Routes>\n                <Route path = \"/login\" element={<LoginPage/>}></Route>\n                <Route path = \"/signup\" element={<SignUpPage/>}></Route>\n                <Route path=\"/\" element={<Navigate to=\"/login\" />} />\n            </Routes>\n        </div>\n    );\n}\n\nexport default App;\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/frontend/src/App.js b/frontend/src/App.js
+--- a/frontend/src/App.js	(revision a37cf7e8033db6c101bae4478ae715d0009941fb)
++++ b/frontend/src/App.js	(date 1713212451368)
+@@ -2,6 +2,8 @@
+ import {Routes, Route, Navigate} from 'react-router-dom';
+ import LoginPage from "./components/LoginPage/LoginPage";
+ import SignUpPage from "./components/SignUpPage/SignUpPage";
++import Dashboard from "./components/Dashboard/Dashboard";
++import Listpets from "./components/Listpets/Listpets";
+ 
+ 
+ function App() {
+@@ -12,6 +14,9 @@
+                 <Route path = "/login" element={<LoginPage/>}></Route>
+                 <Route path = "/signup" element={<SignUpPage/>}></Route>
+                 <Route path="/" element={<Navigate to="/login" />} />
++                <Route path="/dashboard" element={<Dashboard/>}></Route>
++                <Route path = "/listpets" element={<Listpets/>}></Route>
++
+             </Routes>
+         </div>
+     );
+Index: frontend/src/components/Dashboard/Dashboard.jsx
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/frontend/src/components/Dashboard/Dashboard.jsx b/frontend/src/components/Dashboard/Dashboard.jsx
+--- a/frontend/src/components/Dashboard/Dashboard.jsx	(revision a37cf7e8033db6c101bae4478ae715d0009941fb)
++++ b/frontend/src/components/Dashboard/Dashboard.jsx	(date 1713212451373)
+@@ -1,0 +1,40 @@
++import React from 'react';
++import { Link } from 'react-router-dom';
++import { Button, Container, Typography } from '@mui/material';
++import Navbar from '../Navbar/Navbar';
++
++const Dashboard = ({ role }) => {
++// role = 'owner'
++    return (
++        <div>
++            <Navbar />
++            <Container maxWidth="md" sx={{ marginTop: '100px', textAlign: 'center' }}>
++                <Typography variant="h4" gutterBottom>Dashboard</Typography>
++                {role === 'owner' ? (
++                    <div>
++                        <Button variant="contained" color="primary" component={Link} to="/add-pet">
++                            Add Pet
++                        </Button>
++                        <Button variant="contained" color="secondary" component={Link} to="/delete-pet">
++                            Delete Pet
++                        </Button>
++                        <Button variant="contained" color="primary" component={Link} to="/update-pet">
++                            Update Pet
++                        </Button>
++                    </div>
++                ) : (
++                    <div>
++                        {/*<Button variant="contained" color="primary" component={Link} to="/list-pets">*/}
++                        {/*    View Pets*/}
++                        {/*</Button>*/}
++                        {/*<Button variant="contained" color="secondary" component={Link} to="/request-pet">*/}
++                        {/*    Request Pet*/}
++                        {/*</Button>*/}
++                    </div>
++                )}
++            </Container>
++        </div>
++    );
++};
++
++export default Dashboard;
+Index: frontend/src/components/SignUpPage/SignUpPage.jsx
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import React, { useState } from 'react';\nimport { Link, useNavigate } from 'react-router-dom';\nimport { TextField, Button, Typography, Container, MenuItem } from '@mui/material';\n\nconst SignUpPage = ({ onSignup }) => {\n    const [name, setName] = useState('');\n    const [email, setEmail] = useState('');\n    const [phoneNumber, setPhoneNumber] = useState('');\n    const [type, setType] = useState('');\n    const [password, setPassword] = useState('');\n    const [confirmPassword, setConfirmPassword] = useState('');\n    const navigate = useNavigate();\n\n\n    const handleSubmit = async (e) => {\n        e.preventDefault();\n        if (password !== confirmPassword) {\n            alert(\"Passwords don't match\");\n            return;\n        }\n\n        try {\n            const response = await fetch('http://localhost:4000/login/signup', {\n                method: 'POST',\n                headers: {\n                    'Content-Type': 'application/json'\n                },\n                body: JSON.stringify({\n                    name,\n                    email,\n                    phoneNumber,\n                    type,\n                    password\n                })\n            });\n            if (response.ok) {\n                // Handle successful signup\n                navigate('/dashboard');\n            } else {\n                const data = await response.json();\n                alert(data.message); // Display error message from the server\n            }\n        } catch (error) {\n            console.error('Error signing up:', error);\n            alert('An error occurred. Please try again later.');\n        }\n    };\n\n    return (\n        <Container maxWidth=\"sm\" sx={{ marginTop: '100px', textAlign: 'center' }}>\n            <Typography variant=\"h4\" gutterBottom>Sign Up</Typography>\n            <form onSubmit={handleSubmit}>\n                <TextField\n                    label=\"Name\"\n                    variant=\"outlined\"\n                    fullWidth\n                    margin=\"normal\"\n                    value={name}\n                    onChange={(e) => setName(e.target.value)}\n                />\n                <TextField\n                    type=\"email\"\n                    label=\"Email\"\n                    variant=\"outlined\"\n                    fullWidth\n                    margin=\"normal\"\n                    value={email}\n                    onChange={(e) => setEmail(e.target.value)}\n                />\n                <TextField\n                    label=\"Phone Number\"\n                    variant=\"outlined\"\n                    fullWidth\n                    margin=\"normal\"\n                    value={phoneNumber}\n                    onChange={(e) => setPhoneNumber(e.target.value)}\n                />\n                <TextField\n                    select\n                    label=\"Type\"\n                    variant=\"outlined\"\n                    fullWidth\n                    margin=\"normal\"\n                    value={type}\n                    onChange={(e) => setType(e.target.value)}\n                >\n                    <MenuItem value=\"owner\">Owner</MenuItem>\n                    <MenuItem value=\"user\">User</MenuItem>\n                </TextField>\n                <TextField\n                    type=\"password\"\n                    label=\"Password\"\n                    variant=\"outlined\"\n                    fullWidth\n                    margin=\"normal\"\n                    value={password}\n                    onChange={(e) => setPassword(e.target.value)}\n                />\n                <TextField\n                    type=\"password\"\n                    label=\"Confirm Password\"\n                    variant=\"outlined\"\n                    fullWidth\n                    margin=\"normal\"\n                    value={confirmPassword}\n                    onChange={(e) => setConfirmPassword(e.target.value)}\n                />\n                <Button type=\"submit\" variant=\"contained\" color=\"primary\" fullWidth>\n                    Sign Up\n                </Button>\n            </form>\n            <Typography variant=\"body2\" marginTop={2}>\n                Already have an account? <Link to=\"/login\">Login</Link>\n            </Typography>\n        </Container>\n    );\n};\n\nexport default SignUpPage;\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/frontend/src/components/SignUpPage/SignUpPage.jsx b/frontend/src/components/SignUpPage/SignUpPage.jsx
+--- a/frontend/src/components/SignUpPage/SignUpPage.jsx	(revision a37cf7e8033db6c101bae4478ae715d0009941fb)
++++ b/frontend/src/components/SignUpPage/SignUpPage.jsx	(date 1713212451380)
+@@ -35,7 +35,8 @@
+             });
+             if (response.ok) {
+                 // Handle successful signup
+-                navigate('/dashboard');
++                onSignup(type); // Pass the type to the parent component
++                navigate('/dashboard', { state: { role: type } }); // Redirect to dashboard with role as state
+             } else {
+                 const data = await response.json();
+                 alert(data.message); // Display error message from the server
+Index: frontend/src/components/LoginPage/LoginPage.jsx
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import React, { useState } from 'react';\nimport { Link, useNavigate } from 'react-router-dom';\nimport { TextField, Button, Typography, Container, MenuItem } from '@mui/material';\n\nconst LoginPage = ({ onLogin }) => {\n    const [username, setUsername] = useState('');\n    const [password, setPassword] = useState('');\n    const [role, setRole] = useState('');\n    const navigate = useNavigate();\n\n    const handleSubmit = async (e) => {\n        e.preventDefault();\n\n        try {\n            const response = await fetch('http://localhost:4000/login', {\n                method: 'POST',\n                headers: {\n                    'Content-Type': 'application/json'\n                },\n                body: JSON.stringify({\n                    username,\n                    password,\n                    role\n                })\n            });\n            if (response.ok) {\n                // Handle successful login\n                navigate('/dashboard');\n            } else {\n                const data = await response.json();\n                alert(data.message); // Display error message from the server\n            }\n        } catch (error) {\n            console.error('Error logging in:', error);\n            alert('An error occurred. Please try again later.');\n        }\n    };\n\n    return (\n        <Container maxWidth=\"sm\" sx={{ marginTop: '100px', textAlign: 'center' }}>\n            <Typography variant=\"h4\" gutterBottom>Login</Typography>\n            <form onSubmit={handleSubmit}>\n                <TextField\n                    label=\"Username\"\n                    variant=\"outlined\"\n                    fullWidth\n                    margin=\"normal\"\n                    value={username}\n                    onChange={(e) => setUsername(e.target.value)}\n                />\n                <TextField\n                    type=\"password\"\n                    label=\"Password\"\n                    variant=\"outlined\"\n                    fullWidth\n                    margin=\"normal\"\n                    value={password}\n                    onChange={(e) => setPassword(e.target.value)}\n                />\n                <TextField\n                    select\n                    label=\"Role\"\n                    variant=\"outlined\"\n                    fullWidth\n                    margin=\"normal\"\n                    value={role}\n                    onChange={(e) => setRole(e.target.value)}\n                >\n                    <MenuItem value=\"owner\">Owner</MenuItem>\n                    <MenuItem value=\"user\">User</MenuItem>\n                </TextField>\n                <Button type=\"submit\" variant=\"contained\" color=\"primary\" fullWidth>\n                    Login\n                </Button>\n            </form>\n            <Typography variant=\"body2\" marginTop={2}>\n                Don't have an account? <Link to=\"/signup\">Sign up</Link>\n            </Typography>\n        </Container>\n    );\n};\n\nexport default LoginPage;\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/frontend/src/components/LoginPage/LoginPage.jsx b/frontend/src/components/LoginPage/LoginPage.jsx
+--- a/frontend/src/components/LoginPage/LoginPage.jsx	(revision a37cf7e8033db6c101bae4478ae715d0009941fb)
++++ b/frontend/src/components/LoginPage/LoginPage.jsx	(date 1713212451384)
+@@ -25,7 +25,8 @@
+             });
+             if (response.ok) {
+                 // Handle successful login
+-                navigate('/dashboard');
++                onLogin(role); // Pass the role to the parent component
++                navigate('/dashboard', { state: { role } }); // Redirect to dashboard with role as state
+             } else {
+                 const data = await response.json();
+                 alert(data.message); // Display error message from the server
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project version=\"4\">\n  <component name=\"AutoImportSettings\">\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\n  </component>\n  <component name=\"ChangeListManager\">\n    <list default=\"true\" id=\"168c045f-ab5d-4b68-9bfd-19518200dc65\" name=\"Changes\" comment=\"Components added\">\n      <change beforePath=\"$PROJECT_DIR$/frontend/src/App.js\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/frontend/src/App.js\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/frontend/src/components/Listpets/Listpets.jsx\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/frontend/src/components/Listpets/Listpets.jsx\" afterDir=\"false\" />\n    </list>\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\n  </component>\n  <component name=\"Git.Settings\">\n    <option name=\"RECENT_BRANCH_BY_REPOSITORY\">\n      <map>\n        <entry key=\"$PROJECT_DIR$\" value=\"main\" />\n      </map>\n    </option>\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\n  </component>\n  <component name=\"MarkdownSettingsMigration\">\n    <option name=\"stateVersion\" value=\"1\" />\n  </component>\n  <component name=\"ProjectId\" id=\"2eeaHyzOG3FsmQVBDIT7bYyMwbP\" />\n  <component name=\"ProjectLevelVcsManager\">\n    <ConfirmationsSetting value=\"1\" id=\"Add\" />\n  </component>\n  <component name=\"ProjectViewState\">\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\n    <option name=\"showLibraryContents\" value=\"true\" />\n  </component>\n  <component name=\"PropertiesComponent\">{\n  &quot;keyToString&quot;: {\n    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,\n    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,\n    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,\n    &quot;git-widget-placeholder&quot;: &quot;master&quot;,\n    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,\n    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,\n    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,\n    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,\n    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,\n    &quot;ts.external.directory.path&quot;: &quot;/Users/ashrit/Documents/INFS740/Project/PetAdoptionPlatform/node_modules/typescript/lib&quot;,\n    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;\n  }\n}</component>\n  <component name=\"RecentsManager\">\n    <key name=\"MoveFile.RECENT_KEYS\">\n      <recent name=\"$PROJECT_DIR$/src/components/Navbar\" />\n    </key>\n  </component>\n  <component name=\"RunManager\">\n    <configuration name=\"start\" type=\"js.build_tools.npm\" nameIsGenerated=\"true\">\n      <package-json value=\"$PROJECT_DIR$/frontend/package.json\" />\n      <command value=\"run\" />\n      <scripts>\n        <script value=\"start\" />\n      </scripts>\n      <node-interpreter value=\"project\" />\n      <envs />\n      <method v=\"2\" />\n    </configuration>\n  </component>\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\n  <component name=\"TaskManager\">\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\n      <changelist id=\"168c045f-ab5d-4b68-9bfd-19518200dc65\" name=\"Changes\" comment=\"\" />\n      <created>1712267414204</created>\n      <option name=\"number\" value=\"Default\" />\n      <option name=\"presentableId\" value=\"Default\" />\n      <updated>1712267414204</updated>\n      <workItem from=\"1712267416180\" duration=\"2968000\" />\n      <workItem from=\"1712625479814\" duration=\"13835000\" />\n      <workItem from=\"1712786935110\" duration=\"4819000\" />\n      <workItem from=\"1712860267239\" duration=\"2707000\" />\n      <workItem from=\"1713044708619\" duration=\"2704000\" />\n    </task>\n    <task id=\"LOCAL-00001\" summary=\"Components added\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1712688133516</created>\n      <option name=\"number\" value=\"00001\" />\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1712688133517</updated>\n    </task>\n    <task id=\"LOCAL-00002\" summary=\"Components added\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1712701092180</created>\n      <option name=\"number\" value=\"00002\" />\n      <option name=\"presentableId\" value=\"LOCAL-00002\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1712701092180</updated>\n    </task>\n    <task id=\"LOCAL-00003\" summary=\"Components added\">\n      <option name=\"closed\" value=\"true\" />\n      <created>1712712386978</created>\n      <option name=\"number\" value=\"00003\" />\n      <option name=\"presentableId\" value=\"LOCAL-00003\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1712712386978</updated>\n    </task>\n    <option name=\"localTasksCounter\" value=\"4\" />\n    <servers />\n  </component>\n  <component name=\"TypeScriptGeneratedFilesManager\">\n    <option name=\"version\" value=\"3\" />\n  </component>\n  <component name=\"VcsManagerConfiguration\">\n    <MESSAGE value=\"Components added\" />\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"Components added\" />\n  </component>\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision a37cf7e8033db6c101bae4478ae715d0009941fb)
++++ b/.idea/workspace.xml	(date 1713212849707)
+@@ -5,8 +5,11 @@
+   </component>
+   <component name="ChangeListManager">
+     <list default="true" id="168c045f-ab5d-4b68-9bfd-19518200dc65" name="Changes" comment="Components added">
++      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/frontend/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.js" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/frontend/src/components/Listpets/Listpets.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Listpets/Listpets.jsx" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/frontend/src/components/Dashboard/Dashboard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Dashboard/Dashboard.jsx" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/frontend/src/components/LoginPage/LoginPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/LoginPage/LoginPage.jsx" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/frontend/src/components/SignUpPage/SignUpPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/SignUpPage/SignUpPage.jsx" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+@@ -43,7 +46,7 @@
+     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+-    &quot;ts.external.directory.path&quot;: &quot;/Users/ashrit/Documents/INFS740/Project/PetAdoptionPlatform/node_modules/typescript/lib&quot;,
++    &quot;ts.external.directory.path&quot;: &quot;/Applications/WebStorm.app/Contents/plugins/javascript-impl/jsLanguageServicesImpl/external&quot;,
+     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+   }
+ }</component>
+@@ -76,7 +79,7 @@
+       <workItem from="1712625479814" duration="13835000" />
+       <workItem from="1712786935110" duration="4819000" />
+       <workItem from="1712860267239" duration="2707000" />
+-      <workItem from="1713044708619" duration="2704000" />
++      <workItem from="1713044708619" duration="6102000" />
+     </task>
+     <task id="LOCAL-00001" summary="Components added">
+       <option name="closed" value="true" />
+@@ -102,7 +105,15 @@
+       <option name="project" value="LOCAL" />
+       <updated>1712712386978</updated>
+     </task>
+-    <option name="localTasksCounter" value="4" />
++    <task id="LOCAL-00004" summary="Components added">
++      <option name="closed" value="true" />
++      <created>1713047504671</created>
++      <option name="number" value="00004" />
++      <option name="presentableId" value="LOCAL-00004" />
++      <option name="project" value="LOCAL" />
++      <updated>1713047504671</updated>
++    </task>
++    <option name="localTasksCounter" value="5" />
+     <servers />
+   </component>
+   <component name="TypeScriptGeneratedFilesManager">
+@@ -112,4 +123,15 @@
+     <MESSAGE value="Components added" />
+     <option name="LAST_COMMIT_MESSAGE" value="Components added" />
+   </component>
++  <component name="XDebuggerManager">
++    <breakpoint-manager>
++      <breakpoints>
++        <line-breakpoint enabled="true" type="javascript">
++          <url>file://$PROJECT_DIR$/frontend/src/index.js</url>
++          <properties lambdaOrdinal="-1" />
++          <option name="timeStamp" value="1" />
++        </line-breakpoint>
++      </breakpoints>
++    </breakpoint-manager>
++  </component>
+ </project>
+\ No newline at end of file
