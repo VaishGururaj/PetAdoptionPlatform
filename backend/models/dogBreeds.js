@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const dogBreedSchema = new Schema({
-    breed_id: { type: Number, required: true, unique: true},
     description: { type: String },
     temperament: { type: String },
     popularity: { type: Number },
@@ -26,4 +25,4 @@ const dogBreedSchema = new Schema({
     demeanor_category: { type: String }
 });
 
-module.exports = mongoose.model('dogBreeds', dogBreedSchema);
+module.exports = mongoose.model('DogBreeds', dogBreedSchema);

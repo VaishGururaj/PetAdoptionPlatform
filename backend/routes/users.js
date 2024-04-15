@@ -1,26 +1,51 @@
-const express = require('express')
+const express = require('express');
+const router = express.Router();
+const PetRequest = require('../models/petRequest');
 
-const router = express.Router()
+// Get all entries from petRequests where userId matches 
+router.get('/:userid', async (req, res) => {
+    const userId = req.params.userid;
 
+    try {
+        const petRequests = await PetRequest.find({ user_id: userId });
+        res.status(200).json(petRequests);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
 
-//get a single pet
-router.get('/:id',(req,res)=>{
-    res.json({msg:'get a single user'})
-})
+// Post a new petRequest by getting ownerid from pets table with that petid
+router.post('/:userid', async (req, res) => {
+    const userId = req.params.userid;
+    const { pet_id } = req.body;
 
-//post a new pet
-router.post('/',(req,res)=>{
-    res.json({msg:'post a new user'})
-})
+    try {
+        // Assuming you have a function to fetch owner_id from pets table based on pet_id
+        const owner_id = await getOwnerIdFromPet(pet_id);
 
-//delete a single pet
-router.delete('/:id',(req,res)=>{
-    res.json({msg:'delete a single user'})
-})
+        // Create a new petRequest
+        const newPetRequest = new PetRequest({ user_id: userId, pet_id, owner_id });
+        await newPetRequest.save();
 
-//update a single pet
-router.patch('/:id',(req,res)=>{
-    res.json({msg:'update a single user'})
-})
+        res.status(201).json({ message: 'Pet request created successfully' });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
 
-module.exports = router
+// Delete a single petRequest
+router.delete('/:userid', async (req, res) => {
+    const userId = req.params.userid;
+    const { pet_id } = req.body;
+
+    try {
+        // Delete the pet request
+        await PetRequest.deleteOne({ user_id: userId, pet_id });
+
+        res.status(204).end();
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+module.exports = router;

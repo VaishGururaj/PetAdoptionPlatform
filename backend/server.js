@@ -2,6 +2,9 @@ require('dotenv').config()
 const express = require('express');
 const mongoose = require('mongoose');
 const petRoutes = require('./routes/pets');
+const ownerRoutes = require('./routes/owners');
+const loginRoutes = require('./routes/login');
+const cors = require('cors');
 
 const PORT = process.env.PORT || 4000;
 const MONGO_URI = process.env.MONGO_URI;
@@ -9,7 +12,8 @@ const MONGO_URI = process.env.MONGO_URI;
 const app = express();
 
 //middleware
-app.use(express.json())
+app.use(express.json());
+app.use(cors());
 app.use((req,res,next)=>{
     console.log(req.path,req.method);
     next();
@@ -17,9 +21,13 @@ app.use((req,res,next)=>{
 
 //routes
 app.use('/pets',petRoutes);
+app.use('/owner',ownerRoutes);
+app.use('/login',loginRoutes);
+
 
 //connect to db
 mongoose.connect(MONGO_URI)
+
 .then(()=>{
     //listen for request
     app.listen(PORT, ()=>{

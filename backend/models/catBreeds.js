@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const catBreedSchema = new Schema({
-    breed_id: { type: Number, required: true, unique: true},
     name: { type: String, required: true },
     length: { type: Number },
     origin: { type: String },
@@ -21,4 +20,4 @@ const catBreedSchema = new Schema({
     other_pets_friendly: { type: Boolean }
 });
 
-module.exports = mongoose.model('catBreed', catBreedSchema);
+module.exports = mongoose.model('CatBreed', catBreedSchema);
