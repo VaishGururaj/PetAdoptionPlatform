@@ -26,21 +26,34 @@ router.get('/:ownerId', async (req, res) => {
                     as: 'requesting_users'
                 }
             },
-            { $unwind: '$pet_requests' },
-            { $unwind: '$requesting_users' },
+            {
+                $addFields: {
+                    role: 'owner',
+                    owner_id: ownerId,
+                    pet_requests: {
+                        $map: {
+                            input: "$pet_requests",
+                            as: "request",
+                            in: {
+                                petrequestid: "$$request._id",
+                                userid: "$$request.user_id",
+                                petid: "$_id",
+                                petname: "$name",
+                                username: { $arrayElemAt: ["$requesting_users.username", 0] },
+                                description: { $arrayElemAt: ["$requesting_users.description", 0] },
+                                contact_details: { $arrayElemAt: ["$requesting_users.contact_details", 0] }
+                            }
+                        }
+                    }
+                }
+            },
             {
                 $project: {
-                    _id: 0,
-                    petrequestid: '$pet_requests._id',
-                    userid: '$requesting_users._id',
-                    petid: '$_id',
-                    petname: '$name',
-                    username: '$requesting_users.username',
-                    description: '$requesting_users.description',
-                    contact_details: '$requesting_users.contact_details'
+                    requesting_users: 0
                 }
             }
         ]);
+        
 
         res.status(200).json(result);
     } catch (error) {
@@ -122,11 +135,9 @@ router.post('/accept', async (req, res) => {
                 }
             }
         ]);
-
         if (petResult.length === 0) {
             return res.status(404).json({ message: 'Pet not found' });
         }
-        
         const { owner_id } = petResult[0];
 
         // Create a new entry in the Transaction collection
