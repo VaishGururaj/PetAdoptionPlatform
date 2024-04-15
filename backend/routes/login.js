@@ -3,6 +3,8 @@ const router = express.Router();
 const Owner = require('../models/owners');
 const User = require('../models/users');
 const Login = require('../models/login');
+const PetRequest = require('../models/petRequests');
+
 
 router.post('/signup', async (req, res) => {
     try {
@@ -27,7 +29,7 @@ router.post('/signup', async (req, res) => {
         const newLogin = new Login({ username, password });
         await newLogin.save();
 
-        res.status(201).json({ message: 'User created successfully' });
+        res.status(200).json({ message: 'User created successfully' });
     } catch (error) {
         res.status(500).json({ error: 'Internal Server Error' });
     }
@@ -62,18 +64,20 @@ router.post('/', async (req, res) => {
     }
 });
 
-router.delete('/:personid', async (req, res) => {
-    const personId = req.params.personid;
+router.delete('/', async (req, res) => {
+    const {role, username, personId} = req.body;
     try {
         // Delete from the Logins collection
-        await Login.findOneAndDelete({ username: personId });
+        await Login.findOneAndDelete({ username: username });
 
         // Delete from the appropriate collection based on the role
-        if (personId.startsWith('owner')) {
+        if (role == "owner") {
             await Owner.findOneAndDelete({ owner_id: personId });
             await Pets.deleteMany({ owner_id: personId });
-        } else if (personId.startsWith('user')) {
+        } else if (role == "user") {
             await User.findOneAndDelete({ user_id: personId });
+            await PetRequest.deleteMany({ user_id: personId });
+
         } else {
             return res.status(400).json({ error: 'Invalid person ID' });
         }

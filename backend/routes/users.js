@@ -21,7 +21,6 @@ router.post('/:userid', async (req, res) => {
     const { pet_id } = req.body;
 
     try {
-        // Create a new petRequest
         const newPetRequest = new PetRequest({ user_id: userId, pet_id });
         await newPetRequest.save();
         res.status(201).json({ message: 'Pet request created successfully' });
