@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const PetRequest = require('../models/petRequest');
+const PetRequest = require('../models/petRequests');
 
 // Get all entries from petRequests where userId matches 
 router.get('/:userid', async (req, res) => {
@@ -34,7 +34,7 @@ router.post('/:userid', async (req, res) => {
 });
 
 // Delete a single petRequest
-router.delete('/:userid', async (req, res) => {
+router.delete('/', async (req, res) => {
     const userId = req.params.userid;
     const { pet_id } = req.body;
 

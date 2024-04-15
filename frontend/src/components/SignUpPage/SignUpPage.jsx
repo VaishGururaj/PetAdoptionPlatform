@@ -18,7 +18,7 @@ const SignUpPage = ({ onSignup }) => {
             alert("Passwords don't match");
             return;
         }
-
+        const type = "agency";
         try {
             const response = await fetch('http://localhost:4000/login/signup', {
                 method: 'POST',
@@ -30,7 +30,8 @@ const SignUpPage = ({ onSignup }) => {
                     username,
                     contact_details,
                     role,
-                    password
+                    password,
+                    type
                 })
             });
             if (response.ok) {

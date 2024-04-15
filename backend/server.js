@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const petRoutes = require('./routes/pets');
 const ownerRoutes = require('./routes/owners');
 const loginRoutes = require('./routes/login');
+const userRoutes = require('./routes/users');
 const cors = require('cors');
 
 const PORT = process.env.PORT || 4000;
@@ -23,6 +24,8 @@ app.use((req,res,next)=>{
 app.use('/pets',petRoutes);
 app.use('/owner',ownerRoutes);
 app.use('/login',loginRoutes);
+app.use('/user',userRoutes);
+
 
 
 //connect to db
