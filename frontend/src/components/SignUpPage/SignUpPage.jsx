@@ -4,9 +4,9 @@ import { TextField, Button, Typography, Container, MenuItem } from '@mui/materia
 
 const SignUpPage = ({ onSignup }) => {
     const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [phoneNumber, setPhoneNumber] = useState('');
-    const [type, setType] = useState('');
+    const [username, setUsername] = useState('');
+    const [contact_details, setContact] = useState('');
+    const [role, setRole] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const navigate = useNavigate();
@@ -27,9 +27,9 @@ const SignUpPage = ({ onSignup }) => {
                 },
                 body: JSON.stringify({
                     name,
-                    email,
-                    phoneNumber,
-                    type,
+                    username,
+                    contact_details,
+                    role,
                     password
                 })
             });
@@ -64,16 +64,16 @@ const SignUpPage = ({ onSignup }) => {
                     variant="outlined"
                     fullWidth
                     margin="normal"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
                 />
                 <TextField
                     label="Phone Number"
                     variant="outlined"
                     fullWidth
                     margin="normal"
-                    value={phoneNumber}
-                    onChange={(e) => setPhoneNumber(e.target.value)}
+                    value={contact_details}
+                    onChange={(e) => setContact(e.target.value)}
                 />
                 <TextField
                     select
@@ -81,8 +81,8 @@ const SignUpPage = ({ onSignup }) => {
                     variant="outlined"
                     fullWidth
                     margin="normal"
-                    value={type}
-                    onChange={(e) => setType(e.target.value)}
+                    value={role}
+                    onChange={(e) => setRole(e.target.value)}
                 >
                     <MenuItem value="owner">Owner</MenuItem>
                     <MenuItem value="user">User</MenuItem>
