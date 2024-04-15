@@ -7,6 +7,7 @@ const SignUpPage = ({ onSignup }) => {
     const [username, setUsername] = useState('');
     const [contact_details, setContact] = useState('');
     const [role, setRole] = useState('');
+    const [type, setType] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const navigate = useNavigate();
@@ -36,7 +37,8 @@ const SignUpPage = ({ onSignup }) => {
             });
             if (response.ok) {
                 // Handle successful signup
-                navigate('/dashboard');
+                onSignup(role); // Pass the type to the parent component
+                navigate('/dashboard', { state: { role: role } }); // Redirect to dashboard with role as state
             } else {
                 const data = await response.json();
                 alert(data.message); // Display error message from the server
@@ -78,7 +80,7 @@ const SignUpPage = ({ onSignup }) => {
                 />
                 <TextField
                     select
-                    label="Type"
+                    label="Role"
                     variant="outlined"
                     fullWidth
                     margin="normal"
@@ -88,6 +90,20 @@ const SignUpPage = ({ onSignup }) => {
                     <MenuItem value="owner">Owner</MenuItem>
                     <MenuItem value="user">User</MenuItem>
                 </TextField>
+                {role === 'owner' && (
+                    <TextField
+                        select
+                        label="Type"
+                        variant="outlined"
+                        fullWidth
+                        margin="normal"
+                        value={type}
+                        onChange={(e) => setType(e.target.value)}
+                    >
+                        <MenuItem value="agency">Agency</MenuItem>
+                        <MenuItem value="individual">Individual</MenuItem>
+                    </TextField>
+                )}
                 <TextField
                     type="password"
                     label="Password"

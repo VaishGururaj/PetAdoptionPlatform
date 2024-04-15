@@ -25,7 +25,8 @@ const LoginPage = ({ onLogin }) => {
             });
             if (response.ok) {
                 // Handle successful login
-                navigate('/dashboard');
+                onLogin(role); // Pass the role to the parent component
+                navigate('/dashboard', { state: { role } }); // Redirect to dashboard with role as state
             } else {
                 const data = await response.json();
                 alert(data.message); // Display error message from the server
