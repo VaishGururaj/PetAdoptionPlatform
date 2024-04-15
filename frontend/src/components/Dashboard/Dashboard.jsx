@@ -24,12 +24,12 @@ const Dashboard = ({ role }) => {
                     </div>
                 ) : (
                     <div>
-                        {/*<Button variant="contained" color="primary" component={Link} to="/list-pets">*/}
-                        {/*    View Pets*/}
-                        {/*</Button>*/}
-                        {/*<Button variant="contained" color="secondary" component={Link} to="/request-pet">*/}
-                        {/*    Request Pet*/}
-                        {/*</Button>*/}
+                        <Button variant="contained" color="primary" component={Link} to="/list-pets">
+                            View Pets
+                        </Button>
+                        <Button variant="contained" color="secondary" component={Link} to="/request-pet">
+                            Request Pet
+                        </Button>
                     </div>
                 )}
             </Container>

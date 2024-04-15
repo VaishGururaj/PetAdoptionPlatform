@@ -80,7 +80,7 @@ const SignUpPage = ({ onSignup }) => {
                 />
                 <TextField
                     select
-                    label="Type"
+                    label="Role"
                     variant="outlined"
                     fullWidth
                     margin="normal"
