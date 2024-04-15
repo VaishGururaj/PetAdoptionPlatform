@@ -126,7 +126,7 @@ router.post('/accept', async (req, res) => {
         if (petResult.length === 0) {
             return res.status(404).json({ message: 'Pet not found' });
         }
-
+        
         const { owner_id } = petResult[0];
 
         // Create a new entry in the Transaction collection
