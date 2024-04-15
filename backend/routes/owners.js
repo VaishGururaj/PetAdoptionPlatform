@@ -5,7 +5,7 @@ const router = express.Router()
 
 //get all listings with particular id from pets table and from petRequests table where that petid exists
 router.get('/:ownerId', async (req, res) => {
-    const ownerId = req.params.ownerId;
+    const ownerId = req.params.ownerId.replace(':', '');
     try {
         const result = await Pets.aggregate([
             { $match: { owner_id: ownerId } },
@@ -24,6 +24,12 @@ router.get('/:ownerId', async (req, res) => {
                     foreignField: '_id',
                     as: 'requesting_users'
                 }
+            },
+            {
+                $addFields: {
+                    role: 'owner',
+                    owner_id: ownerId
+                }
             }
         ]);
 
@@ -38,9 +44,11 @@ router.get('/:ownerId', async (req, res) => {
 router.post('/:ownerId',async (req,res)=>{
     const {age, name, gender, species, breed, description, adoption_fee, picture} = req.body
     const owner_id = req.params.ownerId.replace(':', '');
+    const role = 'owner';
   try {
-    const pets = await Pets.create({age, name, gender, species, breed, description, adoption_fee, picture,owner_id})
-    res.status(200).json(pets)
+    const pets = await Pets.create({ age, name, gender, species, breed, description, adoption_fee, picture, owner_id });
+    const responsePets = { ...pets.toObject(), role, owner_id };
+    res.status(200).json(responsePets);
   } catch (error) {
     res.status(400).json({error: error.message})
   }
@@ -48,7 +56,8 @@ router.post('/:ownerId',async (req,res)=>{
 
 //delete a single pet
 router.delete('/:petid', async (req, res) => {
-    const petId = req.params.petid.replace(':', '');;
+    const petId = req.params.petid.replace(':', '');
+    const role = 'owner';
     try {
         await Pets.findByIdAndDelete(petId);
         res.status(204).end();
