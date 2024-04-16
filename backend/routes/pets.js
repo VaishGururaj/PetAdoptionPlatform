@@ -1,7 +1,7 @@
 const express = require('express')
-const CatBreed = require('../models/catBreeds');
-const DogBreed = require('../models/dogBreeds');
-const Pet = require('../models/pets');
+const CatBreeds = require('../models/catBreeds');
+const DogBreeds = require('../models/dogBreeds');
+const Pets = require('../models/pets');
 const router = express.Router();
 const mongoose = require('mongoose');
 
@@ -9,7 +9,7 @@ const mongoose = require('mongoose');
 //get all pets
 router.get('/', async (req, res) => {
     try {
-        const pets = await Pet.find();
+        const pets = await Pets.find();
         res.status(200).json(pets);
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -21,11 +21,11 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
     const petId = req.params.id.replace(':', '');
     try {
-        const petAggregate = await Pet.aggregate([
+        const petAggregate = await Pets.aggregate([
             { $match: { _id: new mongoose.Types.ObjectId(petId) } },
             {
                 $lookup: {
-                    from: 'catBreeds',
+                    from: 'catBreed',
                     localField: 'breed',
                     foreignField: 'name',
                     as: 'catBreedDetails'
@@ -33,7 +33,7 @@ router.get('/:id', async (req, res) => {
             },
             {
                 $lookup: {
-                    from: 'dogBreeds',
+                    from: 'dogBreed',
                     localField: 'breed',
                     foreignField: 'Name',
                     as: 'dogBreedDetails'
