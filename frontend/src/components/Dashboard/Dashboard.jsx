@@ -1,11 +1,12 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import {Link, useLocation} from 'react-router-dom';
 import { Button, Container, Typography } from '@mui/material';
 import Navbar from '../Navbar/Navbar';
 import OwnerDashboard from './OwnerDashboard'; // Import the OwnerDashboard component
 
-const Dashboard = ({ role, userData }) => {
-    console.log(role, userData);
+const Dashboard = () => {
+    const location = useLocation();
+    const { role, userData } = location.state;
     return (
         <div>
             <Navbar />
