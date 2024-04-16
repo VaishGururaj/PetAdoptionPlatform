@@ -25,7 +25,7 @@ const OwnerDashboard = ({ userData }) => {
 
     const handleAddPet = (newPet) => {
         // Send a POST request to add the new pet to the server
-        fetch(`http://localhost:4000/${userData[0].owner_id}`, {
+        fetch(`http://localhost:4000/owner/:${userData[0].owner_id}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

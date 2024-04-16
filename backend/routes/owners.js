@@ -72,7 +72,7 @@ router.get('/:ownerId', async (req, res) => {
                                 userid: "$$request.user_id",
                                 petid: "$_id",
                                 petname: "$name",
-                                username: { $arrayElemAt: ["$requesting_users.username", 0] },
+                                username: { $arrayElemAt: ["$requesting_users.name", 0] },
                                 description: { $arrayElemAt: ["$requesting_users.description", 0] },
                                 contact_details: { $arrayElemAt: ["$requesting_users.contact_details", 0] }
                             }

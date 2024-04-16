@@ -1,6 +1,10 @@
 const express = require('express')
+const CatBreed = require('../models/catBreeds');
+const DogBreed = require('../models/dogBreeds');
+const Pet = require('../models/pets');
+const router = express.Router();
+const mongoose = require('mongoose');
 
-const router = express.Router()
 
 //get all pets
 router.get('/', async (req, res) => {
@@ -12,18 +16,58 @@ router.get('/', async (req, res) => {
     }
 });
 
-//get a single pet
+
+// Get a single pet with breed details using aggregation
 router.get('/:id', async (req, res) => {
     const petId = req.params.id.replace(':', '');
     try {
-        const pet = await Pet.findById(petId);
-        if (!pet) {
+        const petAggregate = await Pet.aggregate([
+            { $match: { _id: new mongoose.Types.ObjectId(petId) } },
+            {
+                $lookup: {
+                    from: 'catBreeds',
+                    localField: 'breed',
+                    foreignField: 'name',
+                    as: 'catBreedDetails'
+                }
+            },
+            {
+                $lookup: {
+                    from: 'dogBreeds',
+                    localField: 'breed',
+                    foreignField: 'Name',
+                    as: 'dogBreedDetails'
+                }
+            },
+            {
+                $project: {
+                    _id: 1,
+                    age: 1,
+                    name: 1,
+                    gender: 1,
+                    species: 1,
+                    description: 1,
+                    adoption_fee: 1,
+                    photo_image: 1,
+                    breedDetails: {
+                        $cond: {
+                            if: { $eq: ["$species", "cat"] },
+                            then: { $arrayElemAt: ["$catBreedDetails", 0] },
+                            else: { $arrayElemAt: ["$dogBreedDetails", 0] }
+                        }
+                    }
+                }
+            }
+        ]);
+
+        if (!petAggregate || petAggregate.length === 0) {
             return res.status(404).json({ message: 'Pet not found' });
         }
-        res.status(200).json(pet);
+
+        res.status(200).json(petAggregate[0]);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 });
 
-module.exports = router
+module.exports = router;

@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const dogBreedSchema = new Schema({
+    Name: { type: String, required: true },
     description: { type: String },
     temperament: { type: String },
     popularity: { type: Number },
