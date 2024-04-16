@@ -27,8 +27,8 @@ const LoginPage = ({ onLogin }) => {
             if (response.ok) {
                 const userData = await response.json();
                 console.log(userData)
-                console.log(userData.role)
-                navigate('/dashboard', { state: { role: userData.role, userData: userData } });
+                console.log(userData[0].role)
+                navigate('/dashboard', { state: { role: userData[0].role, userData: userData } });
             } else {
                 const data = await response.json();
                 alert(data.message); // Display error message from the server
