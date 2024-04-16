@@ -1,14 +1,14 @@
 // LoginPage.jsx
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import { TextField, Button, Typography, Container, MenuItem } from '@mui/material';
-import Dashboard from "../Dashboard/Dashboard";
 
 const LoginPage = ({ onLogin }) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [role, setRole] = useState('');
-    const [userData, setUserData] = useState(null);
+
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -27,7 +27,7 @@ const LoginPage = ({ onLogin }) => {
             });
             if (response.ok) {
                 const userData = await response.json();
-                setUserData(userData); // Store user data in state
+                navigate('/dashboard', { state: { role, userData } });
             } else {
                 const data = await response.json();
                 alert(data.message); // Display error message from the server
@@ -37,10 +37,6 @@ const LoginPage = ({ onLogin }) => {
             alert('An error occurred. Please try again later.');
         }
     };
-
-    if (userData) {
-        return <Dashboard role={role} userData={userData} />;
-    }
 
     return (
         <Container maxWidth="sm" sx={{ marginTop: '100px', textAlign: 'center' }}>
