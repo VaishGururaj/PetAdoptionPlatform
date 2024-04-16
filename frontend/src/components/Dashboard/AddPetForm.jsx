@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Button, TextField, Typography } from '@mui/material';
+import { TextField, Button, Select, MenuItem, FormControl, InputLabel, Typography } from '@mui/material';
 
 const AddPetForm = ({ onAdd }) => {
-    const [petName, setPetName] = useState('');
+    const [name, setName] = useState('');
     const [species, setSpecies] = useState('');
     const [breed, setBreed] = useState('');
     const [description, setDescription] = useState('');
@@ -10,18 +10,21 @@ const AddPetForm = ({ onAdd }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+
         // Create a new pet object with the form data
         const newPet = {
-            name: petName,
+            name,
             species,
             breed,
             description,
             adoption_fee: adoptionFee,
         };
-        // Pass the new pet object to the onAdd function
+
+        // Call the onAdd function passed from the parent component
         onAdd(newPet);
-        // Reset the form fields
-        setPetName('');
+
+        // Clear the form fields after submission
+        setName('');
         setSpecies('');
         setBreed('');
         setDescription('');
@@ -30,23 +33,26 @@ const AddPetForm = ({ onAdd }) => {
 
     return (
         <form onSubmit={handleSubmit}>
-            <Typography variant="h6" gutterBottom>Add a New Pet</Typography>
+            <Typography variant="h5" gutterBottom>Add Pet</Typography>
             <TextField
-                label="Pet Name"
+                label="Name"
                 variant="outlined"
                 fullWidth
                 margin="normal"
-                value={petName}
-                onChange={(e) => setPetName(e.target.value)}
+                value={name}
+                onChange={(e) => setName(e.target.value)}
             />
-            <TextField
-                label="Species"
-                variant="outlined"
-                fullWidth
-                margin="normal"
-                value={species}
-                onChange={(e) => setSpecies(e.target.value)}
-            />
+            <FormControl fullWidth margin="normal" variant="outlined">
+                <InputLabel>Species</InputLabel>
+                <Select
+                    value={species}
+                    onChange={(e) => setSpecies(e.target.value)}
+                    label="Species"
+                >
+                    <MenuItem value="dog">Dog</MenuItem>
+                    <MenuItem value="cat">Cat</MenuItem>
+                </Select>
+            </FormControl>
             <TextField
                 label="Breed"
                 variant="outlined"
@@ -59,9 +65,9 @@ const AddPetForm = ({ onAdd }) => {
                 label="Description"
                 variant="outlined"
                 fullWidth
+                margin="normal"
                 multiline
                 rows={4}
-                margin="normal"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
             />
