@@ -1,7 +1,8 @@
 // OwnerDashboard.jsx
-import React from 'react';
+import React, {useState} from 'react';
 import { Card, CardContent, Typography, Grid } from '@mui/material';
 import { makeStyles } from '@mui/styles';
+import AddPetForm from "./AddPetForm";
 
 const useStyles = makeStyles({
     card: {
@@ -20,10 +21,29 @@ const useStyles = makeStyles({
 
 const OwnerDashboard = ({ userData }) => {
     const classes = useStyles();
+    const [ownerPets, setOwnerPets] = useState(userData.ownerPets);
+
+    const handleAddPet = (newPet) => {
+        // Send a POST request to add the new pet to the server
+        fetch(`http://localhost:4000/${userData._id}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(newPet),
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                // Update the ownerPets state with the new pet added
+                setOwnerPets([...ownerPets, data]);
+            })
+            .catch((error) => console.error('Error adding pet:', error));
+    };
 
     return (
         <div>
             <Typography variant="h4" gutterBottom>My Pets</Typography>
+            <AddPetForm onAdd={handleAddPet} />
             <Grid container spacing={3}>
                 {userData.map(pet => (
                     <Grid item key={pet._id} xs={12} sm={6} md={4}>
