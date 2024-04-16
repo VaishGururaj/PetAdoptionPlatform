@@ -1,15 +1,39 @@
 const express = require('express');
 const router = express.Router();
 const PetRequest = require('../models/petRequests');
+const Pets = require('../models/pets');
+const Owner = require('../models/owners');
 
 // Get all entries from petRequests where userId matches 
 router.get('/:userid', async (req, res) => {
     const userId = req.params.userid.replace(':', '');
-    const role = 'user';
     try {
         const petRequests = await PetRequest.find({ user_id: userId });
-        const responsePetRequests = { ...petRequests, role, userId };
-        res.status(200).json(responsePetRequests);
+        const enrichedPetRequests = [];
+
+        for (const petRequest of petRequests) {
+            const pet = await Pets.findById(petRequest.pet_id);
+            if (!pet) {
+                continue;
+            }
+
+            const owner = await Owner.findById(pet.owner_id);
+            if (!owner) {
+                continue;
+            }
+
+            const enrichedPetRequest = {
+                petrequestid: petRequest._id,
+                userid: petRequest.user_id,
+                petid: pet._id,
+                petname: pet.name,
+                petimage: pet.photo_image,
+                ownername: owner.name,
+                ownercontact: owner.contact_details
+            };
+            enrichedPetRequests.push(enrichedPetRequest);
+        }
+        res.status(200).json(enrichedPetRequests);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
