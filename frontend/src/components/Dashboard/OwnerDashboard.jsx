@@ -41,6 +41,7 @@ const OwnerDashboard = ({ userData }) => {
 
     return (
         <div>
+            <Typography variant="h4" gutterBottom>Owner Dashboard</Typography>
             <AddPetForm onAdd={handleAddPet} />
             <div>
                 <Typography variant="h4" gutterBottom>My Pets</Typography>
