@@ -1,3 +1,4 @@
+// LoginPage.jsx
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { TextField, Button, Typography, Container, MenuItem } from '@mui/material';
@@ -24,9 +25,10 @@ const LoginPage = ({ onLogin }) => {
                 })
             });
             if (response.ok) {
-                // Handle successful login
-                onLogin(role); // Pass the role to the parent component
-                navigate('/dashboard', { state: { role } }); // Redirect to dashboard with role as state
+                const userData = await response.json();
+                console.log(userData)
+                console.log(userData.role)
+                navigate('/dashboard', { state: { role: userData.role, userData: userData } });
             } else {
                 const data = await response.json();
                 alert(data.message); // Display error message from the server

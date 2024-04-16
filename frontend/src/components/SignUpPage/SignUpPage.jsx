@@ -36,9 +36,7 @@ const SignUpPage = ({ onSignup }) => {
                 })
             });
             if (response.ok) {
-                // Handle successful signup
-                onSignup(role); // Pass the type to the parent component
-                navigate('/dashboard', { state: { role: role } }); // Redirect to dashboard with role as state
+                navigate('/login');
             } else {
                 const data = await response.json();
                 alert(data.message); // Display error message from the server
