@@ -21,10 +21,10 @@ app.use((req,res,next)=>{
 })
 
 //routes
-app.use('/pets',petRoutes);
-app.use('/owner',ownerRoutes);
-app.use('/login',loginRoutes);
-app.use('/user',userRoutes);
+app.use('/pets',petRoutes); // get all pets, one pet
+app.use('/owner',ownerRoutes); // post, update, delete a single pet
+app.use('/login',loginRoutes); // signup, login, update user, delete user
+app.use('/user',userRoutes); //get all pet requests, post pet request, delete pet request
 
 
 
