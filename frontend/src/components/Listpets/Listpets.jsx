@@ -1,114 +1,53 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import Card from '@mui/material/Card';
-import CardActionArea from '@mui/material/CardActionArea';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Typography from '@mui/material/Typography';
-import { makeStyles } from '@mui/styles';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
-import {InputLabel} from "@mui/material";
+import React, { useState, useEffect } from 'react';
+import { Container, Typography, Card, CardContent, Grid } from '@mui/material';
+import Navbar from '../Navbar/Navbar';
 
-const useStyles = makeStyles({
-    root: {
-        display: 'flex',
-        justifyContent: 'center',
-        flexWrap: 'wrap',
-    },
-    card: {
-        width: 300,
-        margin: 20,
-        boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2)',
-        transition: '0.3s',
-        borderRadius: '8px',
-        '&:hover': {
-            boxShadow: '0 8px 16px 0 rgba(0, 0, 0, 0.2)',
-        },
-    },
-    media: {
-        height: 140,
-    },
-    formControl: {
-        margin: 20,
-        minWidth: 120,
-        justifyContent: "center"
-    },
-});
+const Listpets = () => {
+    const [pets, setPets] = useState([]);
 
-const ListPets = () => {
-    const classes = useStyles();
-    const [selectedSpecies, setSelectedSpecies] = useState('');
-    const [pets] = useState([
-        { id: 1, name: 'Buddy', species: 'Dog', age: 3, image: 'https://via.placeholder.com/150' },
-        { id: 2, name: 'Whiskers', species: 'Cat', age: 2, image: 'https://via.placeholder.com/150' },
-        { id: 3, name: 'Max', species: 'Dog', age: 4, image: 'https://via.placeholder.com/150' },
-        { id: 4, name: 'Fluffy', species: 'Cat', age: 1, image: 'https://via.placeholder.com/150' },
-        { id: 5, name: 'Charlie', species: 'Dog', age: 2, image: 'https://via.placeholder.com/150' },
-        { id: 6, name: 'Mittens', species: 'Cat', age: 3, image: 'https://via.placeholder.com/150' },
-        { id: 7, name: 'Rocky', species: 'Dog', age: 5, image: 'https://via.placeholder.com/150' },
-        { id: 8, name: 'Whiskey', species: 'Cat', age: 2, image: 'https://via.placeholder.com/150' },
-        { id: 9, name: 'Luna', species: 'Dog', age: 1, image: 'https://via.placeholder.com/150' },
-        { id: 10, name: 'Shadow', species: 'Cat', age: 4, image: 'https://via.placeholder.com/150' },
-        // Add more dummy pet data as needed
-    ]);
+    useEffect(() => {
+        // Fetch all pets from the server
+        const fetchPets = async () => {
+            try {
+                const response = await fetch('http://localhost:4000/pets');
+                if (response.ok) {
+                    const petsData = await response.json();
+                    setPets(petsData);
+                } else {
+                    console.error('Error fetching pets:', response.statusText);
+                }
+            } catch (error) {
+                console.error('Error fetching pets:', error);
+            }
+        };
 
-    const handleSpeciesChange = (event) => {
-        setSelectedSpecies(event.target.value);
-    };
-
-    const filteredPets = selectedSpecies
-        ? pets.filter(pet => pet.species === selectedSpecies)
-        : pets;
+        fetchPets();
+    }, []);
 
     return (
         <div>
-            <InputLabel id="species-label">Select animal type</InputLabel>
-            <FormControl className={classes.formControl}>
-                <Select
-                    labelId="species-label"
-                    id="species-select"
-                    value={selectedSpecies}
-                    onChange={handleSpeciesChange}
-                    displayEmpty
-                    inputProps={{ 'aria-label': 'Select species' }}
-                >
-                    <MenuItem value="">All species</MenuItem>
-                    <MenuItem value="Dog">Dog</MenuItem>
-                    <MenuItem value="Cat">Cat</MenuItem>
-                    {/* Add more species as needed */}
-                </Select>
-            </FormControl>
-            <div className={classes.root}>
-                {filteredPets.map(pet => (
-                    <Link key={pet.id} to={`/pet/${pet.id}`} style={{ textDecoration: 'none' }}>
-                        <Card className={classes.card}>
-                            <CardActionArea>
-                                <CardMedia
-                                    component="img"
-                                    height="140"
-                                    image={pet.image}
-                                    alt={pet.name}
-                                />
-                                <CardContent>
-                                    <Typography gutterBottom variant="h5" component="div">
-                                        {pet.name}
-                                    </Typography>
-                                    <Typography variant="body2" color="text.secondary">
-                                        Species: {pet.species}
-                                    </Typography>
-                                    <Typography variant="body2" color="text.secondary">
-                                        Age: {pet.age}
-                                    </Typography>
-                                </CardContent>
-                            </CardActionArea>
+            <Navbar />
+        <Container maxWidth="md" sx={{ marginTop: '100px', textAlign: 'center' }}>
+            <Typography variant="h4" gutterBottom>User Dashboard</Typography>
+            <Typography variant="h5" gutterBottom>All Pets</Typography>
+            <Grid container spacing={2}>
+                {pets.map((pet) => (
+                    <Grid item key={pet._id} xs={12} sm={6} md={4}>
+                        <Card sx={{ height: '100%' }}>
+                            <CardContent>
+                                <Typography variant="h6">{pet.name}</Typography>
+                                <Typography variant="body2" color="textSecondary">{pet.species} - {pet.breed}</Typography>
+                                <Typography variant="body1">{pet.description}</Typography>
+                                <Typography variant="h6" color="primary">${pet.adoption_fee}</Typography>
+                                <Typography variant="body2" color="textSecondary">Age: {pet.age}</Typography>
+                            </CardContent>
                         </Card>
-                    </Link>
+                    </Grid>
                 ))}
-            </div>
+            </Grid>
+        </Container>
         </div>
     );
-}
+};
 
-export default ListPets;
+export default Listpets;
