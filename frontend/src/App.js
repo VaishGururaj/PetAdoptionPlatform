@@ -5,6 +5,7 @@ import LoginPage from "./components/LoginPage/LoginPage";
 import SignUpPage from "./components/SignUpPage/SignUpPage";
 import Dashboard from "./components/Dashboard/Dashboard";
 import Listpets from "./components/Listpets/Listpets";
+import PetDetails from "./components/PetDetails/PetDetails";
 
 // Define your custom theme
 const theme = createTheme({
@@ -25,6 +26,7 @@ function App() {
                     <Route path="/" element={<Navigate to="/login" />} />
                     <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/listpets" element={<Listpets />} />
+                    <Route path="/pet/:id" component={PetDetails} />
                 </Routes>
             </div>
         </ThemeProvider>
