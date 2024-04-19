@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Card, CardContent, Typography, Grid, Button } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import AddPetForm from "./AddPetForm";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 
 const useStyles = makeStyles({
     card: {
@@ -22,6 +22,7 @@ const useStyles = makeStyles({
 const OwnerDashboard = ({ userData }) => {
     const classes = useStyles();
     const [ownerPets, setOwnerPets] = useState(userData?.ownerPets || []);
+    const navigate = useNavigate();
 
     const handleAddPet = (newPet) => {
         // Send a POST request to add the new pet to the server
@@ -86,6 +87,8 @@ const OwnerDashboard = ({ userData }) => {
                 }
             })
             .catch((error) => console.error('Error deleting profile:', error));
+
+        navigate('/login');
     };
 
 
