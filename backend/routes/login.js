@@ -90,46 +90,47 @@ router.post('/', async (req, res) => {
 });
 
 router.delete('/', async (req, res) => {
-    const { role, username, personId } = req.body;
+    const { role, personId } = req.body;
     try {
         let deletePipeline = [];
 
-        // Delete from the Logins collection
-        deletePipeline.push({ $match: { username: username } });
-
-        // Delete from the appropriate collection based on the role
+        // Define the match stage based on the role
+        let matchStage;
         if (role === "owner") {
-            deletePipeline.push({ $lookup: { from: "owners", localField: "username", foreignField: "username", as: "owner" } });
-            deletePipeline.push({ $match: { "owner.owner_id": personId } });
-            deletePipeline.push({ $project: { _id: "$owner._id" } });
-
-            await Promise.all([
-                Login.deleteOne({ username: username }),
-                Owner.deleteOne({ owner_id: personId }),
-                Pets.deleteMany({ owner_id: personId })
-            ]);
+            matchStage = { $match: { "owner.owner_id": personId } };
         } else if (role === "user") {
-            deletePipeline.push({ $lookup: { from: "users", localField: "username", foreignField: "username", as: "user" } });
-            deletePipeline.push({ $match: { "user.user_id": personId } });
-            deletePipeline.push({ $project: { _id: "$user._id" } });
-
-            await Promise.all([
-                Login.deleteOne({ username: username }),
-                User.deleteOne({ user_id: personId }),
-                PetRequest.deleteMany({ user_id: personId })
-            ]);
+            matchStage = { $match: { "user.user_id": personId } };
         } else {
             return res.status(400).json({ error: 'Invalid role specified' });
         }
 
+        // Push the match stage into the pipeline
+        deletePipeline.push(matchStage);
+
+        // Project the _id field for deletion
+        deletePipeline.push({ $project: { _id: 1 } });
+
         // Execute the pipeline to delete documents
-        await Login.aggregate(deletePipeline);
+        let result = await Login.aggregate(deletePipeline);
+
+        // Extract the _id values from the result
+        let idsToDelete = result.map(doc => doc._id);
+
+        // Use the _id values to delete documents from respective collections
+        await Promise.all([
+            Login.deleteMany({ _id: { $in: idsToDelete } }),
+            Owner.deleteMany({ owner_id: personId }),
+            Pets.deleteMany({ owner_id: personId }),
+            User.deleteMany({ user_id: personId }),
+            PetRequest.deleteMany({ user_id: personId })
+        ]);
 
         res.status(200).json({ message: 'Person deleted successfully' });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 });
+
 
 router.patch('/:personid', async (req, res) => {
     const personId = req.params.personid;
