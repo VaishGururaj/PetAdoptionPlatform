@@ -20,11 +20,11 @@ const useStyles = makeStyles({
 
 const OwnerDashboard = ({ userData }) => {
     const classes = useStyles();
-    const [ownerPets, setOwnerPets] = useState(userData.ownerPets);
+    const [ownerPets, setOwnerPets] = useState(userData?.ownerPets || []);
 
     const handleAddPet = (newPet) => {
         // Send a POST request to add the new pet to the server
-        fetch(`http://localhost:4000/owner/:${userData[0].owner_id}`, {
+        fetch(`http://localhost:4000/owner/:${userData?.[0]?.owner_id}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -60,6 +60,10 @@ const OwnerDashboard = ({ userData }) => {
             .catch((error) => console.error('Error confirming pet request:', error));
     };
 
+    if (!userData) {
+        return <div>Loading...</div>;
+    }
+
     return (
         <div>
             <Typography variant="h4" gutterBottom>Owner Dashboard</Typography>
@@ -67,12 +71,34 @@ const OwnerDashboard = ({ userData }) => {
             <div>
                 <Typography variant="h4" gutterBottom>My Pets</Typography>
                 <Grid container spacing={3}>
-                    {/* Display owner's pets */}
+                    {userData.map((pet) => (
+                        <Grid item key={pet._id} xs={12} sm={6} md={4}>
+                            <Card className={classes.card}>
+                                <CardContent className={classes.cardContent}>
+                                    <Typography variant="h5" component="div" gutterBottom>
+                                        {pet.name}
+                                    </Typography>
+                                    <Typography color="text.secondary" gutterBottom>
+                                        {pet.species} - {pet.breed}
+                                    </Typography>
+                                    <Typography variant="body2" component="p" gutterBottom>
+                                        {pet.description}
+                                    </Typography>
+                                    <Typography color="text.secondary" gutterBottom>
+                                        Adoption Fee: ${pet.adoption_fee}
+                                    </Typography>
+                                    <Typography color="text.secondary" gutterBottom>
+                                        Age: {pet.age}
+                                    </Typography>
+                                </CardContent>
+                            </Card>
+                        </Grid>
+                    ))}
                 </Grid>
                 <Typography variant="h4" gutterBottom>My Pet Requests</Typography>
                 <Grid container spacing={3}>
-                    {userData.map(data => (
-                        data.pet_requests.map(request => (
+                    {userData.map((data) => (
+                        data.pet_requests.map((request) => (
                             <Grid item key={request.petrequestid} xs={12} sm={6} md={4}>
                                 <Card className={classes.card}>
                                     <CardContent className={classes.cardContent}>
