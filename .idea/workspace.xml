@@ -4,12 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="168c045f-ab5d-4b68-9bfd-19518200dc65" name="Changes" comment="Components added">
+    <list default="true" id="168c045f-ab5d-4b68-9bfd-19518200dc65" name="Changes" comment="Changes done">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/routes/pets.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/routes/pets.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/Dashboard/Dashboard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Dashboard/Dashboard.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/Listpets/Listpets.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Listpets/Listpets.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/PetDetails/PetDetails.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/PetDetails/PetDetails.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -81,7 +77,7 @@
       <workItem from="1712786935110" duration="4819000" />
       <workItem from="1712860267239" duration="2707000" />
       <workItem from="1713044708619" duration="12886000" />
-      <workItem from="1713223718207" duration="28003000" />
+      <workItem from="1713223718207" duration="29077000" />
     </task>
     <task id="LOCAL-00001" summary="Components added">
       <option name="closed" value="true" />
@@ -227,7 +223,15 @@
       <option name="project" value="LOCAL" />
       <updated>1713551822681</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="Changes done">
+      <option name="closed" value="true" />
+      <created>1713567048223</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1713567048223</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -235,7 +239,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Components added" />
-    <option name="LAST_COMMIT_MESSAGE" value="Components added" />
+    <MESSAGE value="Changes done" />
+    <option name="LAST_COMMIT_MESSAGE" value="Changes done" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
