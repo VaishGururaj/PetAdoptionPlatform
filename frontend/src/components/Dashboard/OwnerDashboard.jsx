@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Card, CardContent, Typography, Grid, Button } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import AddPetForm from "./AddPetForm";
+import {Link} from "react-router-dom";
 
 const useStyles = makeStyles({
     card: {
@@ -73,6 +74,7 @@ const OwnerDashboard = ({ userData }) => {
                 <Grid container spacing={3}>
                     {userData.map((pet) => (
                         <Grid item key={pet._id} xs={12} sm={6} md={4}>
+                            <Link to={`/pets/:${pet._id}`} style={{ textDecoration: 'none' }}>
                             <Card className={classes.card}>
                                 <CardContent className={classes.cardContent}>
                                     <Typography variant="h5" component="div" gutterBottom>
@@ -92,6 +94,7 @@ const OwnerDashboard = ({ userData }) => {
                                     </Typography>
                                 </CardContent>
                             </Card>
+                            </Link>
                         </Grid>
                     ))}
                 </Grid>
