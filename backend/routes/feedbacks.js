@@ -3,7 +3,7 @@ const express = require('express')
 const router = express.Router()
 
 
-//get a single pet
+//get a single feedback
 router.get('/:id',(req,res)=>{
     res.json({msg:'get a single feedback'})
 })

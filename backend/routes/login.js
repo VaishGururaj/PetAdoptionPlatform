@@ -38,49 +38,92 @@ router.post('/signup', async (req, res) => {
 router.post('/', async (req, res) => {
     try {
         const { username, password, role } = req.body;
-        const login = await Login.findOne({ username, password });
 
+        // Perform a lookup to find the corresponding user or owner based on the role
+        const login = await Login.findOne({ username, password });
         if (!login) {
             return res.status(401).json({ error: 'Unauthorized' });
         }
 
+        let redirectPath = '';
+
         if (role === 'owner') {
-            const owner = await Owner.findOne({ username: login.username });
-            if (!owner) {
+            // Look for the owner based on the username from the login
+            const owner = await Owner.aggregate([
+                {
+                    $match: { username: login.username }
+                },
+                {
+                    $project: {
+                        _id: 1
+                    }
+                }
+            ]);
+            if (owner.length === 0) {
                 return res.status(401).json({ error: 'Unauthorized' });
             }
-            res.redirect(`/owner/${owner._id}`);
+            redirectPath = `/owner/${owner[0]._id}`;
         } else if (role === 'user') {
-            const user = await User.findOne({ username: login.username });
-            if (!user) {
+            // Look for the user based on the username from the login
+            const user = await User.aggregate([
+                {
+                    $match: { username: login.username }
+                },
+                {
+                    $project: {
+                        _id: 1
+                    }
+                }
+            ]);
+            if (user.length === 0) {
                 return res.status(401).json({ error: 'Unauthorized' });
             }
-            res.redirect(`/user/${user._id}`);
+            redirectPath = `/user/${user[0]._id}`;
         } else {
-            res.status(400).json({ error: 'Invalid role specified' });
+            return res.status(400).json({ error: 'Invalid role specified' });
         }
+        // Redirect to the appropriate path
+        res.redirect(redirectPath);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 });
 
 router.delete('/', async (req, res) => {
-    const {role, username, personId} = req.body;
+    const { role, username, personId } = req.body;
     try {
+        let deletePipeline = [];
+
         // Delete from the Logins collection
-        await Login.findOneAndDelete({ username: username });
+        deletePipeline.push({ $match: { username: username } });
 
         // Delete from the appropriate collection based on the role
-        if (role == "owner") {
-            await Owner.findOneAndDelete({ owner_id: personId });
-            await Pets.deleteMany({ owner_id: personId });
-        } else if (role == "user") {
-            await User.findOneAndDelete({ user_id: personId });
-            await PetRequest.deleteMany({ user_id: personId });
+        if (role === "owner") {
+            deletePipeline.push({ $lookup: { from: "owners", localField: "username", foreignField: "username", as: "owner" } });
+            deletePipeline.push({ $match: { "owner.owner_id": personId } });
+            deletePipeline.push({ $project: { _id: "$owner._id" } });
 
+            await Promise.all([
+                Login.deleteOne({ username: username }),
+                Owner.deleteOne({ owner_id: personId }),
+                Pets.deleteMany({ owner_id: personId })
+            ]);
+        } else if (role === "user") {
+            deletePipeline.push({ $lookup: { from: "users", localField: "username", foreignField: "username", as: "user" } });
+            deletePipeline.push({ $match: { "user.user_id": personId } });
+            deletePipeline.push({ $project: { _id: "$user._id" } });
+
+            await Promise.all([
+                Login.deleteOne({ username: username }),
+                User.deleteOne({ user_id: personId }),
+                PetRequest.deleteMany({ user_id: personId })
+            ]);
         } else {
-            return res.status(400).json({ error: 'Invalid person ID' });
+            return res.status(400).json({ error: 'Invalid role specified' });
         }
+
+        // Execute the pipeline to delete documents
+        await Login.aggregate(deletePipeline);
 
         res.status(200).json({ message: 'Person deleted successfully' });
     } catch (error) {

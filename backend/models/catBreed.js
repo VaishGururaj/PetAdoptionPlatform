@@ -20,4 +20,4 @@ const catBreedSchema = new Schema({
     other_pets_friendly: { type: Boolean }
 });
 
-module.exports = mongoose.model('CatBreed', catBreedSchema);
+module.exports = mongoose.model('catBreed', catBreedSchema);
