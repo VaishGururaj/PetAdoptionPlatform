@@ -12,6 +12,7 @@ const PetDetails = () => {
                 const response = await fetch(`http://localhost:4000/pets/${id}`);
                 if (response.ok) {
                     const petData = await response.json();
+                    //console.log(petData)
                     setPet(petData);
                 } else {
                     console.error('Error fetching pet details:', response.statusText);
@@ -35,7 +36,6 @@ const PetDetails = () => {
                     <p>Description: {pet.description}</p>
                     <p>Adoption Fee: ${pet.adoption_fee}</p>
                     <p>Age: {pet.age}</p>
-                    {/* Display additional pet details as needed */}
                 </div>
             ) : (
                 <p>Loading...</p>

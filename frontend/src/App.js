@@ -26,7 +26,7 @@ function App() {
                     <Route path="/" element={<Navigate to="/login" />} />
                     <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/listpets" element={<Listpets />} />
-                    <Route path="/pet/:id" component={PetDetails} />
+                    <Route path="/pets/:id" element={<PetDetails />} />
                 </Routes>
             </div>
         </ThemeProvider>
