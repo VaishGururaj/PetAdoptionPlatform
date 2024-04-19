@@ -29,7 +29,8 @@ router.get('/:userid', async (req, res) => {
                 petname: pet.name,
                 petimage: pet.photo_image,
                 ownername: owner.name,
-                ownercontact: owner.contact_details
+                ownercontact: owner.contact_details,
+                role: "user"
             };
             enrichedPetRequests.push(enrichedPetRequest);
         }
