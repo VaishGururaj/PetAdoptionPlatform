@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Container, Typography, Card, CardContent, Grid, Button } from '@mui/material';
 import { Link } from 'react-router-dom';
 import Navbar from '../Navbar/Navbar';
-import PetDetails from "../PetDetails/PetDetails";
 
 const Listpets = () => {
     const [pets, setPets] = useState([]);
