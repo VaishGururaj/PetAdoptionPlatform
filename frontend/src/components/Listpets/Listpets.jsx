@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Container, Typography, Card, CardContent, Grid, Button } from '@mui/material';
 import { Link } from 'react-router-dom';
 import Navbar from '../Navbar/Navbar';
+import PetDetails from "../PetDetails/PetDetails";
 
 const Listpets = () => {
     const [pets, setPets] = useState([]);
@@ -58,7 +59,7 @@ const Listpets = () => {
                 <Grid container spacing={2}>
                     {pets.map((pet) => (
                         <Grid item key={pet._id} xs={12} sm={6} md={4}>
-                            <Link to={`/pet/${pet._id}`} style={{ textDecoration: 'none' }}>
+                            <Link to={`/pets/:${pet._id}`} style={{ textDecoration: 'none' }}>
                                 <Card sx={{ height: '100%' }}>
                                     <CardContent>
                                         <Typography variant="h6">{pet.name}</Typography>

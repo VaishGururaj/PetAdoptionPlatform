@@ -23,7 +23,6 @@ const Dashboard = () => {
                 ) : (
                     <div>
                         <UserDashboardInitial userData={userData} />
-                        {/*<UserDashboard userData={userData} />*/}
                     </div>
                 )}
                 <Button variant="contained" color="primary" onClick={handleLogout} sx={{ marginTop: '20px' }}>

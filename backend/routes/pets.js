@@ -1,6 +1,4 @@
 const express = require('express')
-const CatBreeds = require('../models/catBreeds');
-const DogBreeds = require('../models/dogBreeds');
 const Pets = require('../models/pets');
 const router = express.Router();
 const mongoose = require('mongoose');
