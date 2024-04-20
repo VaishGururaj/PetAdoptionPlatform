@@ -77,7 +77,7 @@
       <workItem from="1712786935110" duration="4819000" />
       <workItem from="1712860267239" duration="2707000" />
       <workItem from="1713044708619" duration="12886000" />
-      <workItem from="1713223718207" duration="41487000" />
+      <workItem from="1713223718207" duration="45122000" />
     </task>
     <task id="LOCAL-00001" summary="Components added">
       <option name="closed" value="true" />
@@ -311,11 +311,30 @@
       <option name="project" value="LOCAL" />
       <updated>1713577008871</updated>
     </task>
-    <option name="localTasksCounter" value="30" />
+    <task id="LOCAL-00030" summary="Changes done">
+      <option name="closed" value="true" />
+      <created>1713583249258</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1713583249258</updated>
+    </task>
+    <option name="localTasksCounter" value="31" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Components added" />

@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, Typography, Grid, Button } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import AddPetForm from "./AddPetForm";
-import {Link, useNavigate} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const useStyles = makeStyles({
     card: {
@@ -20,11 +20,21 @@ const useStyles = makeStyles({
 });
 
 const OwnerDashboard = ({ userData }) => {
-    //console.log('Type of response:', typeof userData);
-    console.log(userData)
-
+    console.log()
     const classes = useStyles();
-    const [ownerPets, setOwnerPets] = useState(userData ? userData : []);
+    let [ownerPets, setOwnerPets] = useState([]);
+    useEffect(() => {
+        if (userData) {
+            setOwnerPets(userData);
+        }
+        //console.log(ownerPets)
+    }, [userData]);
+
+    useEffect(() => {
+        console.log("OwnerPets after state update:", ownerPets);
+    }, [ownerPets]);
+
+
     const navigate = useNavigate();
 
 
@@ -39,11 +49,12 @@ const OwnerDashboard = ({ userData }) => {
         })
             .then((response) => response.json())
             .then((data) => {
-                console.log(data);
-                // Update the ownerPets state with the new pet added
-                setOwnerPets((prevOwnerPets) => [...prevOwnerPets, data]);
-                //console.log('Type of ownerPets:', typeof data);
-                //console.log('Updated ownerPets:', ownerPets);
+                setOwnerPets((prevOwnerPets) => {
+                    ownerPets = [...prevOwnerPets, data];
+                    console.log("Updated ownerPets:", ownerPets);
+                    console.log("Owner Pets:", ownerPets)
+                    return ownerPets;
+                });
             })
             .catch((error) => console.error('Error adding pet:', error));
     };
@@ -59,10 +70,8 @@ const OwnerDashboard = ({ userData }) => {
         })
             .then((response) => {
                 if (response.ok) {
-                    // Handle success
                     console.log('Pet request confirmed successfully');
                 } else {
-                    // Handle error
                     console.error('Error confirming pet request:', response.statusText);
                 }
             })
@@ -86,10 +95,8 @@ const OwnerDashboard = ({ userData }) => {
         })
             .then((response) => {
                 if (response.ok) {
-                    // Handle success (e.g., redirect to login page)
                     console.log('Profile deleted successfully');
                 } else {
-                    // Handle error
                     console.error('Error deleting profile:', response.statusText);
                 }
             })
@@ -97,9 +104,6 @@ const OwnerDashboard = ({ userData }) => {
 
         navigate('/login');
     };
-
-
-
 
     if (!userData) {
         return <div>Loading...</div>;
@@ -116,25 +120,25 @@ const OwnerDashboard = ({ userData }) => {
                     {ownerPets && ownerPets.map((pet) => (
                         <Grid item key={pet._id} xs={12} sm={6} md={4}>
                             <Link to={`/pets/:${pet._id}`} style={{ textDecoration: 'none' }}>
-                            <Card className={classes.card}>
-                                <CardContent className={classes.cardContent}>
-                                    <Typography variant="h5" component="div" gutterBottom>
-                                        {pet.name}
-                                    </Typography>
-                                    <Typography color="text.secondary" gutterBottom>
-                                        {pet.species} - {pet.breed}
-                                    </Typography>
-                                    <Typography variant="body2" component="p" gutterBottom>
-                                        {pet.description}
-                                    </Typography>
-                                    <Typography color="text.secondary" gutterBottom>
-                                        Adoption Fee: ${pet.adoption_fee}
-                                    </Typography>
-                                    <Typography color="text.secondary" gutterBottom>
-                                        Age: {pet.age}
-                                    </Typography>
-                                </CardContent>
-                            </Card>
+                                <Card className={classes.card}>
+                                    <CardContent className={classes.cardContent}>
+                                        <Typography variant="h5" component="div" gutterBottom>
+                                            {pet.name}
+                                        </Typography>
+                                        <Typography color="text.secondary" gutterBottom>
+                                            {pet.species} - {pet.breed}
+                                        </Typography>
+                                        <Typography variant="body2" component="p" gutterBottom>
+                                            {pet.description}
+                                        </Typography>
+                                        <Typography color="text.secondary" gutterBottom>
+                                            Adoption Fee: ${pet.adoption_fee}
+                                        </Typography>
+                                        <Typography color="text.secondary" gutterBottom>
+                                            Age: {pet.age}
+                                        </Typography>
+                                    </CardContent>
+                                </Card>
                             </Link>
                         </Grid>
                     ))}
