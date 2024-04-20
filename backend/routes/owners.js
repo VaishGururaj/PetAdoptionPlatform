@@ -3,6 +3,8 @@ const Pets = require('../models/pets');
 const PetRequest = require('../models/petRequests');
 const Transaction = require('../models/transactions');
 const router = express.Router();
+const mongoose = require('mongoose');
+
 
 // If it comes to post adopt route, a new entry should be made in transaction collection with 
 // petid, owner_id and user_id. The entry in petrequest collection corresponding to that petid and
@@ -42,47 +44,73 @@ router.get('/:ownerId', async (req, res) => {
     const ownerId = req.params.ownerId.replace(':', '');
     try {
         const result = await Pets.aggregate([
-            { $match: { owner_id: ownerId } },
-            {
-                $lookup: {
-                    from: 'petrequests',
-                    localField: '_id',
-                    foreignField: 'pet_id',
-                    as: 'pet_requests'
-                }
+            { 
+                $match: { owner_id: new mongoose.Types.ObjectId(ownerId) } 
             },
             {
                 $lookup: {
-                    from: 'users',
-                    localField: 'pet_requests.user_id',
-                    foreignField: '_id',
-                    as: 'requesting_users'
+                    from: 'petrequests',
+                    let: { petId: '$_id' },
+                    pipeline: [
+                        {
+                            $match: {
+                                $expr: { $eq: ['$pet_id', '$$petId'] }
+                            }
+                        },
+                        {
+                            $lookup: {
+                                from: 'users',
+                                localField: 'user_id',
+                                foreignField: '_id',
+                                as: 'requesting_users'
+                            }
+                        },
+                        {
+                            $addFields: {
+                                petrequestid: '$_id',
+                                userid: '$user_id',
+                                petid: '$pet_id',
+                                petname: '$$REMOVE',
+                                username: { $arrayElemAt: ['$requesting_users.name', 0] },
+                                description: { $arrayElemAt: ['$requesting_users.description', 0] },
+                                contact_details: { $arrayElemAt: ['$requesting_users.contact_details', 0] }
+                            }
+                        },
+                        {
+                            $project: {
+                                _id: 0,
+                                petrequestid: 1,
+                                userid: 1,
+                                petid: 1,
+                                petname: 1,
+                                username: 1,
+                                description: 1,
+                                contact_details: 1
+                            }
+                        }
+                    ],
+                    as: 'pet_requests'
                 }
             },
             {
                 $addFields: {
                     role: 'owner',
-                    owner_id: ownerId,
-                    pet_requests: {
-                        $map: {
-                            input: "$pet_requests",
-                            as: "request",
-                            in: {
-                                petrequestid: "$$request._id",
-                                userid: "$$request.user_id",
-                                petid: "$_id",
-                                petname: "$name",
-                                username: { $arrayElemAt: ["$requesting_users.name", 0] },
-                                description: { $arrayElemAt: ["$requesting_users.description", 0] },
-                                contact_details: { $arrayElemAt: ["$requesting_users.contact_details", 0] }
-                            }
-                        }
-                    }
+                    owner_id: new mongoose.Types.ObjectId(ownerId)
                 }
             },
             {
                 $project: {
-                    requesting_users: 0
+                    pet_requests: 1,
+                    age: 1,
+                    name: 1,
+                    gender: 1,
+                    species: 1,
+                    breed: 1,
+                    description: 1,
+                    adoption_fee: 1,
+                    photo_image: 1,
+                    role: 1,
+                    owner_id: 1
                 }
             }
         ]);
@@ -92,6 +120,7 @@ router.get('/:ownerId', async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 });
+
 
 // Post a new pet
 router.post('/:ownerId', async (req, res) => {

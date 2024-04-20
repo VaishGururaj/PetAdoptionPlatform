@@ -5,6 +5,8 @@ const petRoutes = require('./routes/pets');
 const ownerRoutes = require('./routes/owners');
 const loginRoutes = require('./routes/login');
 const userRoutes = require('./routes/users');
+const visualRoutes = require('./routes/visual');
+
 const cors = require('cors');
 
 const PORT = process.env.PORT || 4000;
@@ -25,6 +27,7 @@ app.use('/pets',petRoutes); // get all pets, one pet
 app.use('/owner',ownerRoutes); // post, update, delete a single pet
 app.use('/login',loginRoutes); // signup, login, update user, delete user
 app.use('/user',userRoutes); //get all pet requests, post pet request, delete pet request
+app.use('/visual',visualRoutes); // get species count and adoption status
 
 
 
