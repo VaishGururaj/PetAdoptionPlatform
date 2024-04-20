@@ -21,15 +21,15 @@ const useStyles = makeStyles({
 
 const OwnerDashboard = ({ userData }) => {
     console.log(userData)
+
     const classes = useStyles();
-    const [ownerPets, setOwnerPets] = useState(userData);
+    const [ownerPets, setOwnerPets] = useState(userData || []);
     const navigate = useNavigate();
 
-    console.log(ownerPets);
 
     const handleAddPet = (newPet) => {
         // Send a POST request to add the new pet to the server
-        fetch(`http://localhost:4000/owner/:${userData?.[0]?.owner_id}`, {
+        fetch(`http://localhost:4000/owner/:${ownerPets?.[0]?.owner_id}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -39,8 +39,8 @@ const OwnerDashboard = ({ userData }) => {
             .then((response) => response.json())
             .then((data) => {
                 // Update the ownerPets state with the new pet added
-                setOwnerPets([...ownerPets, data]);
-                window.location.reload();
+                setOwnerPets([ownerPets, data]);
+                console.log('Updated ownerPets:', ownerPets);
             })
             .catch((error) => console.error('Error adding pet:', error));
     };
@@ -110,7 +110,7 @@ const OwnerDashboard = ({ userData }) => {
             <div>
                 <Typography variant="h4" gutterBottom>My Pets</Typography>
                 <Grid container spacing={3}>
-                    {ownerPets.map((pet) => (
+                    {Array.isArray(ownerPets) && ownerPets.map((pet) => (
                         <Grid item key={pet._id} xs={12} sm={6} md={4}>
                             <Link to={`/pets/:${pet._id}`} style={{ textDecoration: 'none' }}>
                             <Card className={classes.card}>
