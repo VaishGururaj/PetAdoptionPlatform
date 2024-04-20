@@ -21,7 +21,7 @@ const useStyles = makeStyles({
 
 const OwnerDashboard = ({ userData }) => {
     const classes = useStyles();
-    const [ownerPets, setOwnerPets] = useState(userData || []);
+    const [ownerPets, setOwnerPets] = useState(userData);
     const navigate = useNavigate();
 
     console.log(ownerPets);
@@ -39,6 +39,7 @@ const OwnerDashboard = ({ userData }) => {
             .then((data) => {
                 // Update the ownerPets state with the new pet added
                 setOwnerPets([...ownerPets, data]);
+                window.location.reload();
             })
             .catch((error) => console.error('Error adding pet:', error));
     };
