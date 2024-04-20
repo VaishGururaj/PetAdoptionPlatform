@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { Card, CardContent, Typography, Grid, Button } from '@mui/material';
-import { makeStyles } from '@mui/styles';
+import React, {useState} from 'react';
+import {Button, Card, CardContent, Grid, Typography} from '@mui/material';
+import {makeStyles} from '@mui/styles';
 import AddPetForm from "./AddPetForm";
-import { Link, useNavigate } from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 
 const useStyles = makeStyles({
     card: {
@@ -39,12 +39,7 @@ const OwnerDashboard = ({ userData }) => {
             .then((response) => response.json())
             .then((data) => {
                 setOwnerPets((prevOwnerPets) => {
-                    console.log("Previous ownerPets:", prevOwnerPets);
-                    const updatedOwnerPets = [...prevOwnerPets, data];
-                    console.log("Updated ownerPets:", updatedOwnerPets);
-                    console.log("sdfsdf", ownerPets)
-                    return updatedOwnerPets;
-
+                    return [...prevOwnerPets, data];
                 });
             })
             .catch((error) => console.error('Error adding pet:', error));
