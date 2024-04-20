@@ -13,7 +13,6 @@ const Dashboard = () => {
     const handleLogout = () => {
         navigate('/login');
     };
-    console.log(userData)
     return (
         <div>
             {role === 'user' && <Navbar />}

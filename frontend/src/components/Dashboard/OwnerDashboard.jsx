@@ -21,8 +21,9 @@ const useStyles = makeStyles({
 
 const OwnerDashboard = ({ userData }) => {
     const classes = useStyles();
-    const [ownerPets, setOwnerPets] = useState(userData?.ownerPets || []);
+    const [ownerPets, setOwnerPets] = useState(userData || []);
     const navigate = useNavigate();
+
 
     const handleAddPet = (newPet) => {
         // Send a POST request to add the new pet to the server
@@ -106,7 +107,7 @@ const OwnerDashboard = ({ userData }) => {
             <div>
                 <Typography variant="h4" gutterBottom>My Pets</Typography>
                 <Grid container spacing={3}>
-                    {userData.map((pet) => (
+                    {ownerPets.map((pet) => (
                         <Grid item key={pet._id} xs={12} sm={6} md={4}>
                             <Link to={`/pets/:${pet._id}`} style={{ textDecoration: 'none' }}>
                             <Card className={classes.card}>
@@ -134,7 +135,7 @@ const OwnerDashboard = ({ userData }) => {
                 </Grid>
                 <Typography variant="h4" gutterBottom>My Pet Requests</Typography>
                 <Grid container spacing={3}>
-                    {userData.map((data) => (
+                    {ownerPets.map((data) => (
                         data.pet_requests.map((request) => (
                             <Grid item key={request.petrequestid} xs={12} sm={6} md={4}>
                                 <Card className={classes.card}>
