@@ -42,6 +42,7 @@ router.post('/accept', async (req, res) => {
 // Get all listings with particular id from pets table and from petRequests table where that petid exists
 router.get('/:ownerId', async (req, res) => {
     const ownerId = req.params.ownerId.replace(':', '');
+    const role = "owner";
     try {
         const result = await Pets.aggregate([
             { 
@@ -93,12 +94,6 @@ router.get('/:ownerId', async (req, res) => {
                 }
             },
             {
-                $addFields: {
-                    role: 'owner',
-                    owner_id: new mongoose.Types.ObjectId(ownerId)
-                }
-            },
-            {
                 $project: {
                     pet_requests: 1,
                     age: 1,
@@ -114,8 +109,7 @@ router.get('/:ownerId', async (req, res) => {
                 }
             }
         ]);
-
-        res.status(200).json(result);
+        res.status(200).json({result,role,ownerId});
     } catch (error) {
         res.status(500).json({ error: error.message });
     }

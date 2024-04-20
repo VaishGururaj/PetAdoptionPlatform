@@ -7,6 +7,7 @@ const Owner = require('../models/owners');
 // Get all entries from petRequests where userId matches 
 router.get('/:userid', async (req, res) => {
     const userId = req.params.userid.replace(':', '');
+    const role = "user";
     try {
         const petRequests = await PetRequest.find({ user_id: userId });
         const enrichedPetRequests = [];
@@ -30,11 +31,10 @@ router.get('/:userid', async (req, res) => {
                 petimage: pet.photo_image,
                 ownername: owner.name,
                 ownercontact: owner.contact_details,
-                role: "user"
             };
             enrichedPetRequests.push(enrichedPetRequest);
         }
-        res.status(200).json(enrichedPetRequests);
+        res.status(200).json({enrichedPetRequests, role, userId});
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
