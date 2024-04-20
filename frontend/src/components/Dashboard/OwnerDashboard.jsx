@@ -103,7 +103,7 @@ const OwnerDashboard = ({ userData }) => {
             <div>
                 <Typography variant="h4" gutterBottom>My Pets</Typography>
                 <Grid container spacing={3}>
-                    {ownerPets && ownerPets.map((pet) => (
+                    {ownerPets && ownerPets.result.map((pet) => (
                         <Grid item key={pet._id} xs={12} sm={6} md={4}>
                             <Link to={`/pets/:${pet._id}`} style={{ textDecoration: 'none' }}>
                                 <Card className={classes.card}>
@@ -131,7 +131,7 @@ const OwnerDashboard = ({ userData }) => {
                 </Grid>
                 <Typography variant="h4" gutterBottom>My Pet Requests</Typography>
                 <Grid container spacing={3}>
-                    {ownerPets.map((data) => (
+                    {ownerPets.result.map((data) => (
                         data.pet_requests && data.pet_requests.map((request) => (
                             <Grid item key={request.petrequestid} xs={12} sm={6} md={4}>
                                 <Card className={classes.card}>
