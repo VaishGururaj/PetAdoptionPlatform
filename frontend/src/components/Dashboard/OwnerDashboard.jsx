@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Card, CardContent, Typography, Grid, Button } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import AddPetForm from "./AddPetForm";
@@ -20,20 +20,9 @@ const useStyles = makeStyles({
 });
 
 const OwnerDashboard = ({ userData }) => {
-    console.log()
+    //console.log(userData)
     const classes = useStyles();
-    let [ownerPets, setOwnerPets] = useState([]);
-    useEffect(() => {
-        if (userData) {
-            setOwnerPets(userData);
-        }
-        //console.log(ownerPets)
-    }, [userData]);
-
-    useEffect(() => {
-        console.log("OwnerPets after state update:", ownerPets);
-    }, [ownerPets]);
-
+    const [ownerPets, setOwnerPets] = useState(userData || []);
 
     const navigate = useNavigate();
 
@@ -50,10 +39,12 @@ const OwnerDashboard = ({ userData }) => {
             .then((response) => response.json())
             .then((data) => {
                 setOwnerPets((prevOwnerPets) => {
-                    ownerPets = [...prevOwnerPets, data];
-                    console.log("Updated ownerPets:", ownerPets);
-                    console.log("Owner Pets:", ownerPets)
-                    return ownerPets;
+                    console.log("Previous ownerPets:", prevOwnerPets);
+                    const updatedOwnerPets = [...prevOwnerPets, data];
+                    console.log("Updated ownerPets:", updatedOwnerPets);
+                    console.log("sdfsdf", ownerPets)
+                    return updatedOwnerPets;
+
                 });
             })
             .catch((error) => console.error('Error adding pet:', error));
@@ -146,7 +137,7 @@ const OwnerDashboard = ({ userData }) => {
                 <Typography variant="h4" gutterBottom>My Pet Requests</Typography>
                 <Grid container spacing={3}>
                     {ownerPets.map((data) => (
-                        data.pet_requests.map((request) => (
+                        data.pet_requests && data.pet_requests.map((request) => (
                             <Grid item key={request.petrequestid} xs={12} sm={6} md={4}>
                                 <Card className={classes.card}>
                                     <CardContent className={classes.cardContent}>
