@@ -40,6 +40,7 @@ const OwnerDashboard = ({ userData }) => {
             .then((data) => {
                 // Update the ownerPets state with the new pet added
                 setOwnerPets([...ownerPets, data]);
+                window.location.reload();
             })
             .catch((error) => console.error('Error adding pet:', error));
     };
