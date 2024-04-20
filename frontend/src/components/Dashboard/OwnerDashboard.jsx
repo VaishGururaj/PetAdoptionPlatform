@@ -20,8 +20,9 @@ const useStyles = makeStyles({
 });
 
 const OwnerDashboard = ({ userData }) => {
+    console.log(userData)
     const classes = useStyles();
-    const [ownerPets, setOwnerPets] = useState(userData || []);
+    const [ownerPets, setOwnerPets] = useState(userData);
     const navigate = useNavigate();
 
     console.log(ownerPets);
