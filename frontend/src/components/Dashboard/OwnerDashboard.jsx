@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Card, CardContent, Typography, Grid, Button } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import AddPetForm from "./AddPetForm";
-import { Link, useNavigate } from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 
 const useStyles = makeStyles({
     card: {
@@ -24,19 +24,11 @@ const OwnerDashboard = ({ userData }) => {
     const [ownerPets, setOwnerPets] = useState(userData || []);
     const navigate = useNavigate();
 
-    useEffect(() => {
-        // Fetch owner's pets from the server initially and whenever userData changes
-        if (userData && userData[0]?.owner_id) {
-            fetch(`http://localhost:4000/owner/${userData[0].owner_id}`)
-                .then(response => response.json())
-                .then(data => setOwnerPets(data))
-                .catch(error => console.error('Error fetching owner pets:', error));
-        }
-    }, [userData]);
+    console.log(ownerPets);
 
     const handleAddPet = (newPet) => {
         // Send a POST request to add the new pet to the server
-        fetch(`http://localhost:4000/owner/${userData?.[0]?.owner_id}`, {
+        fetch(`http://localhost:4000/owner/:${userData?.[0]?.owner_id}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -45,8 +37,8 @@ const OwnerDashboard = ({ userData }) => {
         })
             .then((response) => response.json())
             .then((data) => {
-                // Reload the page to update the list of owner's pets
-                window.location.reload();
+                // Update the ownerPets state with the new pet added
+                setOwnerPets([...ownerPets, data]);
             })
             .catch((error) => console.error('Error adding pet:', error));
     };
@@ -101,6 +93,9 @@ const OwnerDashboard = ({ userData }) => {
         navigate('/login');
     };
 
+
+
+
     if (!userData) {
         return <div>Loading...</div>;
     }
@@ -116,25 +111,25 @@ const OwnerDashboard = ({ userData }) => {
                     {ownerPets.map((pet) => (
                         <Grid item key={pet._id} xs={12} sm={6} md={4}>
                             <Link to={`/pets/:${pet._id}`} style={{ textDecoration: 'none' }}>
-                                <Card className={classes.card}>
-                                    <CardContent className={classes.cardContent}>
-                                        <Typography variant="h5" component="div" gutterBottom>
-                                            {pet.name}
-                                        </Typography>
-                                        <Typography color="text.secondary" gutterBottom>
-                                            {pet.species} - {pet.breed}
-                                        </Typography>
-                                        <Typography variant="body2" component="p" gutterBottom>
-                                            {pet.description}
-                                        </Typography>
-                                        <Typography color="text.secondary" gutterBottom>
-                                            Adoption Fee: ${pet.adoption_fee}
-                                        </Typography>
-                                        <Typography color="text.secondary" gutterBottom>
-                                            Age: {pet.age}
-                                        </Typography>
-                                    </CardContent>
-                                </Card>
+                            <Card className={classes.card}>
+                                <CardContent className={classes.cardContent}>
+                                    <Typography variant="h5" component="div" gutterBottom>
+                                        {pet.name}
+                                    </Typography>
+                                    <Typography color="text.secondary" gutterBottom>
+                                        {pet.species} - {pet.breed}
+                                    </Typography>
+                                    <Typography variant="body2" component="p" gutterBottom>
+                                        {pet.description}
+                                    </Typography>
+                                    <Typography color="text.secondary" gutterBottom>
+                                        Adoption Fee: ${pet.adoption_fee}
+                                    </Typography>
+                                    <Typography color="text.secondary" gutterBottom>
+                                        Age: {pet.age}
+                                    </Typography>
+                                </CardContent>
+                            </Card>
                             </Link>
                         </Grid>
                     ))}
