@@ -20,10 +20,11 @@ const useStyles = makeStyles({
 });
 
 const OwnerDashboard = ({ userData }) => {
+    //console.log('Type of response:', typeof userData);
     console.log(userData)
 
     const classes = useStyles();
-    const [ownerPets, setOwnerPets] = useState(userData || []);
+    const [ownerPets, setOwnerPets] = useState(userData ? userData : []);
     const navigate = useNavigate();
 
 
@@ -38,9 +39,11 @@ const OwnerDashboard = ({ userData }) => {
         })
             .then((response) => response.json())
             .then((data) => {
+                console.log(data);
                 // Update the ownerPets state with the new pet added
-                setOwnerPets([ownerPets, data]);
-                console.log('Updated ownerPets:', ownerPets);
+                setOwnerPets((prevOwnerPets) => [...prevOwnerPets, data]);
+                //console.log('Type of ownerPets:', typeof data);
+                //console.log('Updated ownerPets:', ownerPets);
             })
             .catch((error) => console.error('Error adding pet:', error));
     };
@@ -110,7 +113,7 @@ const OwnerDashboard = ({ userData }) => {
             <div>
                 <Typography variant="h4" gutterBottom>My Pets</Typography>
                 <Grid container spacing={3}>
-                    {Array.isArray(ownerPets) && ownerPets.map((pet) => (
+                    {ownerPets && ownerPets.map((pet) => (
                         <Grid item key={pet._id} xs={12} sm={6} md={4}>
                             <Link to={`/pets/:${pet._id}`} style={{ textDecoration: 'none' }}>
                             <Card className={classes.card}>
