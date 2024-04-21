@@ -136,7 +136,7 @@ router.delete('/:petid', async (req, res) => {
     const role = 'owner';
     try {
         await Pets.findByIdAndDelete(petId);
-        res.status(204).end();
+        res.status(200).end();
     } catch (error) {
         res.status(500).json({ error: error.message });
     }

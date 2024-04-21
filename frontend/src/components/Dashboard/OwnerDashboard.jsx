@@ -47,12 +47,12 @@ const OwnerDashboard = ({ userData }) => {
 
     const handleConfirmRequest = (requestId) => {
         // Send a POST request to confirm the pet request
-        fetch(`http://localhost:4000/confirmRequest/${requestId}`, {
+        fetch(`http://localhost:4000/owner/accept/`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({}),
+            body: JSON.stringify({petrequestid : requestId }),
         })
             .then((response) => {
                 if (response.ok) {
