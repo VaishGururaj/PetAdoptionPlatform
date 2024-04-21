@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Typography, Card, CardContent, Grid, Button, FormControl, Select, MenuItem } from '@mui/material';
-import {Link, useLocation} from 'react-router-dom';
+import {Link, useLocation, useNavigate} from 'react-router-dom';
 import Navbar from '../Navbar/Navbar';
 
 const Listpets = () => {
@@ -11,6 +11,9 @@ const Listpets = () => {
     const [gender, setGender] = useState('');
     const [species, setSpecies] = useState('');
     const [status, setStatus] = useState('');
+
+    const navigate = useNavigate();
+    const role = 'owner';
 
     useEffect(() => {
         // Fetch all pets from the server
@@ -64,8 +67,7 @@ const Listpets = () => {
 
     const handleAddPet = async (petId) => {
         try {
-            // Send a POST request to add a pet request for the specific owner
-            const response = await fetch(`http://localhost:4000/:${userId}`, {
+            const response = await fetch(`http://localhost:4000/user/:${userId}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -75,6 +77,7 @@ const Listpets = () => {
             });
             if (response.ok) {
                 // Handle success
+                navigate('/dashboard', { state: role });
                 console.log('Pet request added successfully');
             } else {
                 // Handle error
