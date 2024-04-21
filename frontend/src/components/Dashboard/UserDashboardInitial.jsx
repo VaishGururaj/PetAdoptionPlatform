@@ -4,6 +4,7 @@ import {useNavigate} from "react-router-dom";
 
 const UserDashboardInitial = ({ userData }) => {
     const navigate = useNavigate();
+    console.log(userData)
     const handleDeleteProfile = () => {
         // Send a DELETE request to delete the profile
         const requestBody = {
@@ -38,7 +39,7 @@ const UserDashboardInitial = ({ userData }) => {
             <Typography variant="h4" gutterBottom>User Dashboard</Typography>
             <Button onClick={handleDeleteProfile} variant="contained" color="error">Delete Profile</Button>
             <Typography variant="h5" gutterBottom>Requested Pets</Typography>
-            {userData && userData.map((request) => (
+            {userData && userData.enrichedPetRequests.map((request) => (
                 <Card key={request.petrequestid} sx={{ marginBottom: '20px', backgroundColor: '#f0f0f0', borderRadius: '8px', width: '300px', margin: '0 auto' }}>
                     <CardContent sx={{ padding: '10px' }}>
                         <Typography variant="h6" sx={{ fontWeight: 'bold', fontSize: '1.2rem' }}>{request.petname}</Typography>
