@@ -3,9 +3,9 @@ const express = require('express')
 const router = express.Router()
 
 
-//get a single feedback
-router.get('/:id',(req,res)=>{
-    res.json({msg:'get a single feedback'})
+//search function
+router.get('/',(req,res)=>{
+    res.json()
 })
 
 //post a new pet

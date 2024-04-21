@@ -73,7 +73,7 @@ const Listpets = () => {
                     'Content-Type': 'application/json',
                 },
                 // Pass the pet details in the request body
-                body: JSON.stringify({ petId }),
+                body: JSON.stringify({pet_id : petId }),
             });
             if (response.ok) {
                 // Handle success
