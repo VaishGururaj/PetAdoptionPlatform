@@ -37,7 +37,7 @@ const Listpets = () => {
     const handleSearch = async () => {
         try {
             // Construct the URL with the search filters
-            let url = `http://localhost:4000/search`;
+            let url = `http://localhost:4000/visual/search`;
             const searchData = { shedding, gender, species, status };
 
             // Send a POST request with search filters

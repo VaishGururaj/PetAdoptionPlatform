@@ -4,9 +4,22 @@ const PetRequest = require('../models/petRequests');
 const Pets = require('../models/pets');
 const Owner = require('../models/owners');
 
-// Get all entries from petRequests where userId matches 
-router.get('/:userid', async (req, res) => {
+router.post('/:userid', async (req, res) => {
     const userId = req.params.userid.replace(':', '');
+    const { pet_id } = req.body;
+
+    try {
+        const newPetRequest = new PetRequest({ user_id: userId, pet_id });
+        await newPetRequest.save();
+        
+        // Call the GET route handler function to fetch and return all pet requests for the user
+        getPetRequestsByUserId(userId, res);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+async function getPetRequestsByUserId(userId, res) {
     const role = "user";
     try {
         const petRequests = await PetRequest.find({ user_id: userId });
@@ -34,25 +47,18 @@ router.get('/:userid', async (req, res) => {
             };
             enrichedPetRequests.push(enrichedPetRequest);
         }
-        res.status(200).json({enrichedPetRequests, role, userId});
+        res.status(200).json({ enrichedPetRequests, role, userId });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
-});
+}
 
-// Post a new petRequest by getting ownerid from pets table with that petid
-router.post('/:userid', async (req, res) => {
+// Get all entries from petRequests where userId matches 
+router.get('/:userid', async (req, res) => {
     const userId = req.params.userid.replace(':', '');
-    const { pet_id } = req.body;
-
-    try {
-        const newPetRequest = new PetRequest({ user_id: userId, pet_id });
-        await newPetRequest.save();
-        res.status(201).json({ message: 'Pet request created successfully' });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
+    getPetRequestsByUserId(userId, res);
 });
+
 
 // Delete a single petRequest
 router.delete('/', async (req, res) => {
