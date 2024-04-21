@@ -34,8 +34,15 @@ const UserDashboardInitial = ({ userData }) => {
         navigate('/login');
     };
 
+    const handleListPets = () => {
+        navigate('/listpets', { state: { userId: userData.userId } });
+    };
+
     return (
         <Container maxWidth="md" sx={{ marginTop: '100px', textAlign: 'center' }}>
+            <div style={{ position: 'absolute', top: '90px', left: '130px' }}>
+                <Button onClick={handleListPets} variant="contained" color="primary">List Pets</Button>
+            </div>
             <Typography variant="h4" gutterBottom>User Dashboard</Typography>
             <Button onClick={handleDeleteProfile} variant="contained" color="error">Delete Profile</Button>
             <Typography variant="h5" gutterBottom>Requested Pets</Typography>

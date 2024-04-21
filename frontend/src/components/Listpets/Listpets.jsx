@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Typography, Card, CardContent, Grid, Button, FormControl, Select, MenuItem } from '@mui/material';
-import { Link } from 'react-router-dom';
+import {Link, useLocation} from 'react-router-dom';
 import Navbar from '../Navbar/Navbar';
 
 const Listpets = () => {
+    const location = useLocation();
+    const { userId } = location.state;
     const [pets, setPets] = useState([]);
     const [shedding, setShedding] = useState('');
     const [gender, setGender] = useState('');
@@ -60,16 +62,16 @@ const Listpets = () => {
         }
     };
 
-    const handleAddPet = async (ownerId, petDetails) => {
+    const handleAddPet = async (petId) => {
         try {
             // Send a POST request to add a pet request for the specific owner
-            const response = await fetch(`http://localhost:4000/owner/:${ownerId}`, {
+            const response = await fetch(`http://localhost:4000/:${userId}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 // Pass the pet details in the request body
-                body: JSON.stringify({ ownerId, petDetails }),
+                body: JSON.stringify({ petId }),
             });
             if (response.ok) {
                 // Handle success
@@ -153,7 +155,7 @@ const Listpets = () => {
                                         <Typography variant="body2" color="textSecondary">Age: {pet.age}</Typography>
                                     </Link>
                                 </CardContent>
-                                <Button onClick={() => handleAddPet(pet.owner_id, { name: pet.name, species: pet.species, breed: pet.breed, description: pet.description, adoption_fee: pet.adoption_fee, age: pet.age })}>Adopt</Button>
+                                <Button onClick={() => handleAddPet(pet._id)}>Adopt</Button>
                             </Card>
                         </Grid>
                     ))}
