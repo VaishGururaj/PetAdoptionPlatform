@@ -90,6 +90,22 @@ const OwnerDashboard = ({ userData }) => {
 
         navigate('/login');
     };
+    const handleDeletePet = (petId) => {
+        // Send a DELETE request to delete the specific pet
+        fetch(`http://localhost:4000/pets/:${petId}`, {
+            method: 'DELETE',
+        })
+            .then((response) => {
+                if (response.ok) {
+                    // Remove the deleted pet from the ownerPets state
+                    setOwnerPets((prevOwnerPets) => prevOwnerPets.filter(pet => pet._id !== petId));
+                    console.log('Pet deleted successfully');
+                } else {
+                    console.error('Error deleting pet:', response.statusText);
+                }
+            })
+            .catch((error) => console.error('Error deleting pet:', error));
+    };
 
     if (!userData) {
         return <div>Loading...</div>;
@@ -105,9 +121,9 @@ const OwnerDashboard = ({ userData }) => {
                 <Grid container spacing={3}>
                     {ownerPets && ownerPets.result.map((pet) => (
                         <Grid item key={pet._id} xs={12} sm={6} md={4}>
-                            <Link to={`/pets/:${pet._id}`} style={{ textDecoration: 'none' }}>
                                 <Card className={classes.card}>
                                     <CardContent className={classes.cardContent}>
+                                        <Link to={`/pets/:${pet._id}`} style={{ textDecoration: 'none' }}>
                                         <Typography variant="h5" component="div" gutterBottom>
                                             {pet.name}
                                         </Typography>
@@ -123,9 +139,13 @@ const OwnerDashboard = ({ userData }) => {
                                         <Typography color="text.secondary" gutterBottom>
                                             Age: {pet.age}
                                         </Typography>
+                                        </Link>
                                     </CardContent>
+                                    <Link to={`/edit-pet/${pet._id}`} style={{ textDecoration: 'none' }}>
+                                        <Button variant="contained" color="primary">Edit</Button>
+                                    </Link>
+                                    <Button onClick={() => handleDeletePet(pet._id)} variant="contained" color="error">Delete</Button>
                                 </Card>
-                            </Link>
                         </Grid>
                     ))}
                 </Grid>

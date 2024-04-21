@@ -25,17 +25,16 @@ const Listpets = () => {
         fetchPets();
     }, []);
 
-    const handleAddPet = async (ownerId) => {
+    const handleAddPet = async (ownerId, petDetails) => {
         try {
             // Send a POST request to add a pet request for the specific owner
-            const response = await fetch(`http://localhost:4000/owner/${ownerId}`, {
+            const response = await fetch(`http://localhost:4000/owner/:${ownerId}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                // Add any additional data needed for the request
-                // For example, you can pass the pet details in the request body
-                body: JSON.stringify({}),
+                // Pass the pet details in the request body
+                body: JSON.stringify({ ownerId, petDetails }),
             });
             if (response.ok) {
                 // Handle success
@@ -48,6 +47,7 @@ const Listpets = () => {
             console.error('Error adding pet request:', error);
         }
     };
+
 
     return (
         <div>
@@ -67,7 +67,7 @@ const Listpets = () => {
                                         <Typography variant="h6" color="primary">${pet.adoption_fee}</Typography>
                                         <Typography variant="body2" color="textSecondary">Age: {pet.age}</Typography>
                                     </CardContent>
-                                    <Button onClick={() => handleAddPet(pet.owner_id)}>Add Pet</Button>
+                                    <Button onClick={() => handleAddPet(pet.owner_id, { name: pet.name, species: pet.species, breed: pet.breed, description: pet.description, adoption_fee: pet.adoption_fee, age: pet.age })}>Adopt</Button>
                                 </Card>
                             </Link>
                         </Grid>

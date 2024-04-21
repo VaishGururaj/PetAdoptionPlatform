@@ -15,7 +15,7 @@ const Dashboard = () => {
     };
     return (
         <div>
-            {role === 'user' && <Navbar />}
+            <Navbar />
             <Container maxWidth="md" sx={{ marginTop: '100px', textAlign: 'center' }}>
                 {role === 'owner' ? (
                     <OwnerDashboard userData={userData} />
