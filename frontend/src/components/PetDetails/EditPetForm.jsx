@@ -1,16 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { Button, TextField, Card, CardContent, Typography } from '@mui/material';
-import { useParams } from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 
 const EditPetForm = () => {
     const { id } = useParams();
     const [petData, setPetData] = useState({});
     const [loading, setLoading] = useState(true);
 
+    const navigate = useNavigate();
+
+    const role = 'owner';
+
     useEffect(() => {
         // Fetch the pet data using the provided ID
         console.log("Pet ID:", id);
-        fetch(`http://localhost:4000/pets/${id}`)
+        fetch(`http://localhost:4000/pets/:${id}`)
             .then((response) => {
                 if (response.ok) {
                     return response.json();
@@ -33,7 +37,7 @@ const EditPetForm = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         // Send a PATCH request to update the pet data
-        fetch(`http://localhost:4000/pets/${id}`, {
+        fetch(`http://localhost:4000/pets/:${id}`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
@@ -42,7 +46,7 @@ const EditPetForm = () => {
         })
             .then((response) => {
                 if (response.ok) {
-                    //onUpdate(petData);
+                    navigate('/dashboard', { state: role });
                     console.log('Pet updated successfully');
                 } else {
                     console.error('Error updating pet:', response.statusText);
@@ -66,24 +70,6 @@ const EditPetForm = () => {
                         name="name"
                         label="Name"
                         value={petData.name}
-                        onChange={handleChange}
-                        fullWidth
-                        required
-                        margin="normal"
-                    />
-                    <TextField
-                        name="species"
-                        label="Species"
-                        value={petData.species}
-                        onChange={handleChange}
-                        fullWidth
-                        required
-                        margin="normal"
-                    />
-                    <TextField
-                        name="breed"
-                        label="Breed"
-                        value={petData.breed}
                         onChange={handleChange}
                         fullWidth
                         required

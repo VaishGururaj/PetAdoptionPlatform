@@ -4,10 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="168c045f-ab5d-4b68-9bfd-19518200dc65" name="Changes" comment="edit and delete added">
+    <list default="true" id="168c045f-ab5d-4b68-9bfd-19518200dc65" name="Changes" comment="Added search filter">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/Dashboard/UserDashboardInitial.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Dashboard/UserDashboardInitial.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/Listpets/Listpets.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Listpets/Listpets.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/PetDetails/EditPetForm.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/PetDetails/EditPetForm.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -352,7 +351,15 @@
       <option name="project" value="LOCAL" />
       <updated>1713674119856</updated>
     </task>
-    <option name="localTasksCounter" value="35" />
+    <task id="LOCAL-00035" summary="Added search filter">
+      <option name="closed" value="true" />
+      <created>1713737147327</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1713737147327</updated>
+    </task>
+    <option name="localTasksCounter" value="36" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -373,7 +380,8 @@
     <MESSAGE value="Components added" />
     <MESSAGE value="Changes done" />
     <MESSAGE value="edit and delete added" />
-    <option name="LAST_COMMIT_MESSAGE" value="edit and delete added" />
+    <MESSAGE value="Added search filter" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added search filter" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
