@@ -29,8 +29,6 @@ router.post('/accept', async (req, res) => {
         // Create a new entry in the Transaction collection
         const transaction = new Transaction({ pet_id, owner_id, user_id });
         await transaction.save();
-
-        // Delete the pet request
         await PetRequest.findByIdAndDelete(petrequestid);
 
         res.status(200).json({ message: 'Transaction created successfully' });

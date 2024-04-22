@@ -55,10 +55,7 @@ router.post('/', async (req, res) => {
                 {
                     $match: { username: login.username }
                 },
-                {
-                    $project: {
-                        _id: 1
-                    }
+                {$project: {_id: 1}
                 }
             ]);
             if (owner.length === 0) {
@@ -72,9 +69,7 @@ router.post('/', async (req, res) => {
                     $match: { username: login.username }
                 },
                 {
-                    $project: {
-                        _id: 1
-                    }
+                    $project: { _id: 1}
                 }
             ]);
             if (user.length === 0) {
@@ -105,20 +100,11 @@ router.delete('/', async (req, res) => {
         } else {
             return res.status(400).json({ error: 'Invalid role specified' });
         }
-
-        // Push the match stage into the pipeline
         deletePipeline.push(matchStage);
-
-        // Project the _id field for deletion
         deletePipeline.push({ $project: { _id: 1 } });
 
-        // Execute the pipeline to delete documents
         let result = await Login.aggregate(deletePipeline);
-
-        // Extract the _id values from the result
         let idsToDelete = result.map(doc => doc._id);
-
-        // Use the _id values to delete documents from respective collections
         await Promise.all([
             Login.deleteMany({ _id: { $in: idsToDelete } }),
             Owner.deleteMany({ owner_id: personId }),

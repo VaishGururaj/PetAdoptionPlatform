@@ -6,6 +6,8 @@ const ownerRoutes = require('./routes/owners');
 const loginRoutes = require('./routes/login');
 const userRoutes = require('./routes/users');
 const visualRoutes = require('./routes/visual');
+const feedbackRoutes = require('./routes/feedbacks');
+
 
 const cors = require('cors');
 
@@ -28,6 +30,7 @@ app.use('/owner',ownerRoutes); // post, update, delete a single pet
 app.use('/login',loginRoutes); // signup, login, update user, delete user
 app.use('/user',userRoutes); //get all pet requests, post pet request, delete pet request
 app.use('/visual',visualRoutes); // get species count and adoption status
+app.use('/feedback',feedbackRoutes); //feedbacks
 
 
 
