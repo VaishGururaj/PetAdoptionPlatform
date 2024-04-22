@@ -171,7 +171,7 @@ const OwnerDashboard = ({ userData }) => {
                                 <Card className={classes.card}>
                                     <CardContent className={classes.cardContent}>
                                         <Typography variant="h5" component="div" gutterBottom>
-                                            Request for {request.petname}
+                                            Request for the pet : {data.name}
                                         </Typography>
                                         <Typography color="text.secondary" gutterBottom>
                                             Requester: {request.username}

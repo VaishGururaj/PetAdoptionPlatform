@@ -1,5 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@mui/styles';
+import Navbar from "../Navbar/Navbar";
 
 const useStyles = makeStyles({
     aboutContainer: {
@@ -24,6 +25,7 @@ const About = () => {
 
     return (
         <div className={classes.aboutContainer}>
+            <Navbar />
             <h1 className={classes.heading}>About Us</h1>
             <p className={classes.paragraph}>Welcome to our website!</p>
             <p className={classes.paragraph}>We are dedicated to providing high-quality products and services to our customers.</p>

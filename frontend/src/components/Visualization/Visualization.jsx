@@ -1,7 +1,26 @@
 import React, { useState, useEffect } from 'react';
-import { Bar } from 'react-chartjs-2';
+import { BarChart } from '@mui/x-charts/BarChart';
+import { axisClasses } from '@mui/x-charts';
+import { Typography } from '@mui/material';
+import Navbar from '../Navbar/Navbar';
 
-const Visualization = () => {
+const chartSetting = {
+    yAxis: [
+        {
+            label: 'Number of Pets',
+        },
+    ],
+    width: 600,
+    height: 400,
+    margin: { top: 40, bottom: 80, left: 60, right: 40 }, // Adjusted margin for better visibility
+    sx: {
+        [`.${axisClasses.left} .${axisClasses.label}`]: {
+            transform: 'translate(-20px, 0)',
+        },
+    },
+};
+
+export default function Visualization() {
     const [petData, setPetData] = useState([]);
 
     useEffect(() => {
@@ -11,50 +30,20 @@ const Visualization = () => {
             .catch(error => console.error('Error fetching pet data:', error));
     }, []);
 
-    const labels = petData.map(item => item._id);
-    const totalValues = petData.map(item => item.total);
-    const adoptedValues = petData.map(item => item.adopted);
-    const notAdoptedValues = petData.map(item => item.notAdopted);
-
-    const data = {
-        labels: labels,
-        datasets: [
-            {
-                label: 'Total',
-                backgroundColor: 'rgba(75,192,192,0.2)',
-                borderColor: 'rgba(75,192,192,1)',
-                borderWidth: 1,
-                hoverBackgroundColor: 'rgba(75,192,192,0.4)',
-                hoverBorderColor: 'rgba(75,192,192,1)',
-                data: totalValues
-            },
-            {
-                label: 'Adopted',
-                backgroundColor: 'rgba(255,99,132,0.2)',
-                borderColor: 'rgba(255,99,132,1)',
-                borderWidth: 1,
-                hoverBackgroundColor: 'rgba(255,99,132,0.4)',
-                hoverBorderColor: 'rgba(255,99,132,1)',
-                data: adoptedValues
-            },
-            {
-                label: 'Not Adopted',
-                backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                borderColor: 'rgba(54, 162, 235, 1)',
-                borderWidth: 1,
-                hoverBackgroundColor: 'rgba(54, 162, 235, 0.4)',
-                hoverBorderColor: 'rgba(54, 162, 235, 1)',
-                data: notAdoptedValues
-            }
-        ]
-    };
-
     return (
-        <div>
-            <h2>Pet Adoption Status Visualization</h2>
-            <Bar data={data} />
+        <div style={{ width: '100%', height: '100%', padding: '20px', backgroundColor: '#f0f0f0' }}>
+            <Navbar />
+            <Typography variant="h5" align="center" gutterBottom>Pet Adoption Status</Typography>
+            <BarChart
+                dataset={petData}
+                xAxis={[{ scaleType: 'band', dataKey: '_id' }]}
+                series={[
+                    { dataKey: 'total', label: 'Total' },
+                    { dataKey: 'adopted', label: 'Adopted' },
+                    { dataKey: 'notAdopted', label: 'Not Adopted' },
+                ]}
+                {...chartSetting}
+            />
         </div>
     );
-};
-
-export default Visualization;
+}
