@@ -6,9 +6,6 @@ const router = express.Router();
 const mongoose = require('mongoose');
 
 
-// If it comes to post adopt route, a new entry should be made in transaction collection with 
-// petid, owner_id and user_id. The entry in petrequest collection corresponding to that petid and
-// userid must be deleted.
 router.post('/accept', async (req, res) => {
     const { petrequestid } = req.body;
     try {
