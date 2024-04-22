@@ -87,44 +87,88 @@ router.get('/adoption-status', async (req, res) => {
 // Search function
 router.post('/search', async (req, res) => {
   const { shedding, gender, species, status } = req.body;
-  console.log(shedding, gender, species, status)
-  const query = {};
 
-  if (gender) query.gender = gender;
-  if (species) query.species = species;
+  const pipeline = [];
+
+  if (gender || species) {
+    const matchStage = {};
+    if (gender) matchStage.gender = gender;
+    if (species) matchStage.species = species;
+    pipeline.push({ $match: matchStage });
+  }
+
+  if (shedding) {
+    let sheddingValue = parseInt(shedding);
+
+    pipeline.push({
+      $lookup: {
+        from: 'catBreed',
+        let: { breedName: '$breed' },
+        pipeline: [
+          {
+            $match: {
+              $expr: { $eq: ['$name', '$$breedName'] },
+              shedding: sheddingValue
+            }
+          }
+        ],
+        as: 'matchedCatBreeds'
+      }
+    });
+
+    pipeline.push({
+      $lookup: {
+        from: 'dogBreed',
+        let: { breedName: '$breed' },
+        pipeline: [
+          {
+            $match: {
+              $expr: { $eq: ['$Name', '$$breedName'] },
+              shedding_value: sheddingValue
+            }
+          }
+        ],
+        as: 'matchedDogBreeds'
+      }
+    });
+
+    pipeline.push({
+      $addFields: {
+        matchedBreeds: { $concatArrays: ['$matchedCatBreeds', '$matchedDogBreeds'] }
+      }
+    });
+
+    pipeline.push({
+      $match: {
+        matchedBreeds: { $ne: [] } // Filter out documents without matched breeds
+      }
+    });
+  }
+
+
+
+  if (status) {
+    const adoptedPetIds = (await Transaction.find({}, 'pet_id')).map(transaction => transaction.pet_id);
+    if (status === 'adopted') {
+      pipeline.push({ $match: { _id: { $in: adoptedPetIds } } });
+    } else {
+      pipeline.push({ $match: { _id: { $nin: adoptedPetIds } } });
+    }
+  }
 
   try {
-      // Retrieve pets matching gender and species criteria
-      let pets = await Pets.find(query);
-
-      // If shedding value is provided, filter pets by shedding value
-      if (shedding) {
-        let sheddingValue=parseInt(shedding);
-        
-        if (species === 'cat'  || !species) {
-            const catBreeds = await CatBreed.find({ shedding: sheddingValue });
-            const catBreedIds = catBreeds.map(breed => breed.name);
-            pets = pets.filter(pet => catBreedIds.includes(pet.breed));
-        } else if (species === 'dog'  || !species) {
-            const dogBreeds = await DogBreed.find({ shedding_value: sheddingValue });
-            const dogBreedIds = dogBreeds.map(breed => breed.Name);
-            pets = pets.filter(pet => dogBreedIds.includes(pet.breed));
-        }
-    }
-
-      // If adoption status is provided, filter pets by adoption status
-      if (status === 'adopted') {
-          const adoptedPetIds = (await Transaction.find({}, 'pet_id')).map(transaction => transaction.pet_id);
-          pets = pets.filter(pet => adoptedPetIds.includes(pet._id));
-      } else if (status === 'not_adopted') {
-          const adoptedPetIds = (await Transaction.find({}, 'pet_id')).map(transaction => transaction.pet_id);
-          pets = pets.filter(pet => !adoptedPetIds.includes(pet._id));
-      }
-
-      res.json(pets);
+    // Execute the aggregation pipeline
+    const pets = await Pets.aggregate(pipeline);
+    res.json(pets);
   } catch (error) {
-      res.status(500).json({ error: error.message });
+    console.error('Error:', error);
+    res.status(500).json({ error: error.message });
   }
 });
+
+
+
+
+
 
 module.exports = router;

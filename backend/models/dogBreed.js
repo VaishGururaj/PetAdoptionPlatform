@@ -26,4 +26,4 @@ const dogBreedSchema = new Schema({
     demeanor_category: { type: String }
 });
 
-module.exports = mongoose.model('dogBreed', dogBreedSchema);
+module.exports = mongoose.model('dogBreed', dogBreedSchema, 'dogBreed');
