@@ -3,7 +3,10 @@ const router = express.Router();
 const PetRequest = require('../models/petRequests');
 const Pets = require('../models/pets');
 const Owner = require('../models/owners');
+const Transaction = require('../models/transactions');
 
+
+//post a new pet request
 router.post('/:userid', async (req, res) => {
     const userId = req.params.userid.replace(':', '');
     const { pet_id } = req.body;
@@ -12,7 +15,6 @@ router.post('/:userid', async (req, res) => {
         const newPetRequest = new PetRequest({ user_id: userId, pet_id });
         await newPetRequest.save();
         
-        // Call the GET route handler function to fetch and return all pet requests for the user
         getPetRequestsByUserId(userId, res);
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -22,6 +24,7 @@ router.post('/:userid', async (req, res) => {
 async function getPetRequestsByUserId(userId, res) {
     const role = "user";
     try {
+        // Retrieve active pet requests
         const petRequests = await PetRequest.find({ user_id: userId });
         const enrichedPetRequests = [];
 
@@ -47,7 +50,29 @@ async function getPetRequestsByUserId(userId, res) {
             };
             enrichedPetRequests.push(enrichedPetRequest);
         }
-        res.status(200).json({ enrichedPetRequests, role, userId });
+
+        // Retrieve all adopted pets for the user
+        const adoptedPets = await Transaction.find({ user_id: userId });
+        const adoptedPetDetails = [];
+        for (const transaction of adoptedPets) {
+            const pet = await Pets.findById(transaction.pet_id);
+            if (pet) {
+                const owner = await Owner.findById(pet.owner_id);
+                if (owner) {
+                    adoptedPetDetails.push({
+                        transactionid: transaction._id, // Use transaction ID as pet request ID for adopted pets
+                        userid: userId,
+                        petid: pet._id,
+                        petname: pet.name,
+                        petimage: pet.photo_image,
+                        ownername: owner.name,
+                        ownercontact: owner.contact_details,
+                    });
+                }
+            }
+        }
+
+        res.status(200).json({ enrichedPetRequests, adoptedPetDetails, role, userId });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
