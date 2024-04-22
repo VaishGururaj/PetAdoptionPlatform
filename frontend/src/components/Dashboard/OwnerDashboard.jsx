@@ -56,13 +56,28 @@ const OwnerDashboard = ({ userData }) => {
         })
             .then((response) => {
                 if (response.ok) {
-                    console.log('Pet request confirmed successfully');
+                    // Fetch the updated list of pets after successful deletion
+                    //console.log("After deleting: ", ownerPets);
+                    return fetch(`http://localhost:4000/owner/:${ownerPets.ownerId}`);
                 } else {
-                    console.error('Error confirming pet request:', response.statusText);
+                    throw new Error('Error deleting pet');
                 }
             })
-            .catch((error) => console.error('Error confirming pet request:', error));
+            .then((response) => {
+                if (response.ok) {
+                    // Parse the response data
+                    return response.json();
+                } else {
+                    throw new Error('Error fetching updated pet list');
+                }
+            })
+            .then((data) => {
+                // Update the state with the new list of pets
+                setOwnerPets(data);
+            })
+            .catch((error) => console.error('Error:', error));
     };
+
 
     const handleDeleteProfile = () => {
         // Send a DELETE request to delete the profile
