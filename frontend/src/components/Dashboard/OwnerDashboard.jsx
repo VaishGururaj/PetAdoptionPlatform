@@ -3,6 +3,7 @@ import {Button, Card, CardContent, Grid, Typography} from '@mui/material';
 import {makeStyles} from '@mui/styles';
 import AddPetForm from "./AddPetForm";
 import {Link, useNavigate} from "react-router-dom";
+import Box from "@mui/material/Box";
 
 const useStyles = makeStyles({
     card: {
@@ -146,6 +147,7 @@ const OwnerDashboard = ({ userData }) => {
             <AddPetForm onAdd={handleAddPet} />
             <Button onClick={handleDeleteProfile} variant="contained" color="error">Delete Profile</Button>
             <div>
+                <Box mb={4}>
                 <Typography variant="h4" gutterBottom>My Pets</Typography>
                 <Grid container spacing={3}>
                     {ownerPets && ownerPets.result && ownerPets.result.map((pet) => (
@@ -178,6 +180,8 @@ const OwnerDashboard = ({ userData }) => {
                         </Grid>
                     ))}
                 </Grid>
+                </Box>
+                <Box mb={4}>
                 <Typography variant="h4" gutterBottom>My Pet Requests</Typography>
                 <Grid container spacing={3}>
                     {ownerPets.result.map((data) => (
@@ -204,6 +208,7 @@ const OwnerDashboard = ({ userData }) => {
                         ))
                     ))}
                 </Grid>
+                </Box>
             </div>
         </div>
     );
