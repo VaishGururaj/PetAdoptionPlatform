@@ -4,6 +4,8 @@ const PetRequest = require('../models/petRequests');
 const Pets = require('../models/pets');
 const Transaction = require('../models/transactions');
 const Owner = require('../models/owners');
+const CatBreed = require('../models/catBreed');
+const DogBreed = require('../models/dogBreed');
 
 router.get('/adopted-species', async (req, res) => {
     try {
@@ -82,5 +84,47 @@ router.get('/adoption-status', async (req, res) => {
     }
   });
   
-  
-  module.exports = router;
+// Search function
+router.post('/search', async (req, res) => {
+  const { shedding, gender, species, status } = req.body;
+  console.log(shedding, gender, species, status)
+  const query = {};
+
+  if (gender) query.gender = gender;
+  if (species) query.species = species;
+
+  try {
+      // Retrieve pets matching gender and species criteria
+      let pets = await Pets.find(query);
+
+      // If shedding value is provided, filter pets by shedding value
+      if (shedding) {
+        let sheddingValue=parseInt(shedding);
+        
+        if (species === 'cat'  || !species) {
+            const catBreeds = await CatBreed.find({ shedding: sheddingValue });
+            const catBreedIds = catBreeds.map(breed => breed.name);
+            pets = pets.filter(pet => catBreedIds.includes(pet.breed));
+        } else if (species === 'dog'  || !species) {
+            const dogBreeds = await DogBreed.find({ shedding_value: sheddingValue });
+            const dogBreedIds = dogBreeds.map(breed => breed.Name);
+            pets = pets.filter(pet => dogBreedIds.includes(pet.breed));
+        }
+    }
+
+      // If adoption status is provided, filter pets by adoption status
+      if (status === 'adopted') {
+          const adoptedPetIds = (await Transaction.find({}, 'pet_id')).map(transaction => transaction.pet_id);
+          pets = pets.filter(pet => adoptedPetIds.includes(pet._id));
+      } else if (status === 'not_adopted') {
+          const adoptedPetIds = (await Transaction.find({}, 'pet_id')).map(transaction => transaction.pet_id);
+          pets = pets.filter(pet => !adoptedPetIds.includes(pet._id));
+      }
+
+      res.json(pets);
+  } catch (error) {
+      res.status(500).json({ error: error.message });
+  }
+});
+
+module.exports = router;
