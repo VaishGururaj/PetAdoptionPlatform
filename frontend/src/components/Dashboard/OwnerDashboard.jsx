@@ -56,13 +56,28 @@ const OwnerDashboard = ({ userData }) => {
         })
             .then((response) => {
                 if (response.ok) {
-                    console.log('Pet request confirmed successfully');
+                    // Fetch the updated list of pets after successful deletion
+                    //console.log("After deleting: ", ownerPets);
+                    return fetch(`http://localhost:4000/owner/:${ownerPets.ownerId}`);
                 } else {
-                    console.error('Error confirming pet request:', response.statusText);
+                    throw new Error('Error deleting pet');
                 }
             })
-            .catch((error) => console.error('Error confirming pet request:', error));
+            .then((response) => {
+                if (response.ok) {
+                    // Parse the response data
+                    return response.json();
+                } else {
+                    throw new Error('Error fetching updated pet list');
+                }
+            })
+            .then((data) => {
+                // Update the state with the new list of pets
+                setOwnerPets(data);
+            })
+            .catch((error) => console.error('Error:', error));
     };
+
 
     const handleDeleteProfile = () => {
         // Send a DELETE request to delete the profile
@@ -92,20 +107,34 @@ const OwnerDashboard = ({ userData }) => {
     };
     const handleDeletePet = (petId) => {
         // Send a DELETE request to delete the specific pet
-        fetch(`http://localhost:4000/pets/:${petId}`, {
+        fetch(`http://localhost:4000/owner/:${petId}`, {
             method: 'DELETE',
         })
             .then((response) => {
                 if (response.ok) {
-                    // Remove the deleted pet from the ownerPets state
-                    setOwnerPets((prevOwnerPets) => prevOwnerPets.filter(pet => pet._id !== petId));
-                    console.log('Pet deleted successfully');
+                    // Fetch the updated list of pets after successful deletion
+                    //console.log("After deleting: ", ownerPets);
+                    return fetch(`http://localhost:4000/owner/:${ownerPets.ownerId}`);
                 } else {
-                    console.error('Error deleting pet:', response.statusText);
+                    throw new Error('Error deleting pet');
                 }
             })
-            .catch((error) => console.error('Error deleting pet:', error));
+            .then((response) => {
+                if (response.ok) {
+                    // Parse the response data
+                    return response.json();
+                } else {
+                    throw new Error('Error fetching updated pet list');
+                }
+            })
+            .then((data) => {
+                // Update the state with the new list of pets
+                setOwnerPets(data);
+                console.log('Pet deleted successfully');
+            })
+            .catch((error) => console.error('Error:', error));
     };
+
 
     if (!userData) {
         return <div>Loading...</div>;
@@ -119,7 +148,7 @@ const OwnerDashboard = ({ userData }) => {
             <div>
                 <Typography variant="h4" gutterBottom>My Pets</Typography>
                 <Grid container spacing={3}>
-                    {ownerPets && ownerPets.result.map((pet) => (
+                    {ownerPets && ownerPets.result && ownerPets.result.map((pet) => (
                         <Grid item key={pet._id} xs={12} sm={6} md={4}>
                                 <Card className={classes.card}>
                                     <CardContent className={classes.cardContent}>
@@ -157,7 +186,7 @@ const OwnerDashboard = ({ userData }) => {
                                 <Card className={classes.card}>
                                     <CardContent className={classes.cardContent}>
                                         <Typography variant="h5" component="div" gutterBottom>
-                                            Request for {request.petname}
+                                            Request for the pet : {data.name}
                                         </Typography>
                                         <Typography color="text.secondary" gutterBottom>
                                             Requester: {request.username}
