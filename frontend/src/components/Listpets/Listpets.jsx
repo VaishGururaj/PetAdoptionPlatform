@@ -13,7 +13,7 @@ const Listpets = () => {
     const [status, setStatus] = useState('');
 
     const navigate = useNavigate();
-    const role = 'owner';
+    const role = 'user';
 
     useEffect(() => {
         // Fetch all pets from the server
@@ -77,7 +77,8 @@ const Listpets = () => {
             });
             if (response.ok) {
                 // Handle success
-                navigate('/dashboard', { state: role });
+                const userData = await response.json();
+                navigate('/dashboard', { state: { role, userData } });
                 console.log('Pet request added successfully');
             } else {
                 // Handle error
