@@ -4,8 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="168c045f-ab5d-4b68-9bfd-19518200dc65" name="Changes" comment="Search query">
+    <list default="true" id="168c045f-ab5d-4b68-9bfd-19518200dc65" name="Changes" comment="Updated list pets">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/routes/pets.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/routes/pets.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/Dashboard/Dashboard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Dashboard/Dashboard.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/Listpets/Listpets.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Listpets/Listpets.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -439,7 +441,15 @@
       <option name="project" value="LOCAL" />
       <updated>1713755046896</updated>
     </task>
-    <option name="localTasksCounter" value="46" />
+    <task id="LOCAL-00046" summary="Updated list pets">
+      <option name="closed" value="true" />
+      <created>1713760258614</created>
+      <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1713760258614</updated>
+    </task>
+    <option name="localTasksCounter" value="47" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -461,14 +471,14 @@
     <MESSAGE value="Changes done" />
     <MESSAGE value="edit and delete added" />
     <MESSAGE value="Added search filter" />
-    <MESSAGE value="Updated list pets" />
     <MESSAGE value="added visual" />
     <MESSAGE value="added user route" />
     <MESSAGE value="Updated pet list" />
     <MESSAGE value="Added Visualization" />
     <MESSAGE value="Updated package.json" />
     <MESSAGE value="Search query" />
-    <option name="LAST_COMMIT_MESSAGE" value="Search query" />
+    <MESSAGE value="Updated list pets" />
+    <option name="LAST_COMMIT_MESSAGE" value="Updated list pets" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
