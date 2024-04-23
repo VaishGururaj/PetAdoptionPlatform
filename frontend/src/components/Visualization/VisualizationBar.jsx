@@ -38,7 +38,7 @@ const VisualizationBar = () => {
     ];
 
     return (
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', padding: '20px', backgroundColor: '#f0f0f0' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', padding: '20px' }}>
             <div>
                 <h2>Adoption Status for Cats by Gender</h2>
                 <BarChart
