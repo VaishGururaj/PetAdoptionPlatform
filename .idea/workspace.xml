@@ -4,10 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="168c045f-ab5d-4b68-9bfd-19518200dc65" name="Changes" comment="added feedback">
+    <list default="true" id="168c045f-ab5d-4b68-9bfd-19518200dc65" name="Changes" comment="adopt list">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/Dashboard/OwnerDashboard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Dashboard/OwnerDashboard.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/Dashboard/UserDashboardInitial.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Dashboard/UserDashboardInitial.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/Visualization/Visualization.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Visualization/Visualization.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -456,7 +455,15 @@
       <option name="project" value="LOCAL" />
       <updated>1713821931626</updated>
     </task>
-    <option name="localTasksCounter" value="48" />
+    <task id="LOCAL-00048" summary="adopt list">
+      <option name="closed" value="true" />
+      <created>1713827972113</created>
+      <option name="number" value="00048" />
+      <option name="presentableId" value="LOCAL-00048" />
+      <option name="project" value="LOCAL" />
+      <updated>1713827972113</updated>
+    </task>
+    <option name="localTasksCounter" value="49" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -486,7 +493,8 @@
     <MESSAGE value="Search query" />
     <MESSAGE value="Updated list pets" />
     <MESSAGE value="added feedback" />
-    <option name="LAST_COMMIT_MESSAGE" value="added feedback" />
+    <MESSAGE value="adopt list" />
+    <option name="LAST_COMMIT_MESSAGE" value="adopt list" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

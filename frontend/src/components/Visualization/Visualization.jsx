@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { BarChart } from '@mui/x-charts/BarChart';
-import { axisClasses } from '@mui/x-charts';
-import { Typography } from '@mui/material';
+import {axisClasses} from '@mui/x-charts';
+import {Typography} from '@mui/material';
 import Navbar from '../Navbar/Navbar';
+import VisualizationBar from "./VisualizationBar";
 
 const chartSetting = {
     yAxis: [
@@ -44,6 +45,7 @@ export default function Visualization() {
                 ]}
                 {...chartSetting}
             />
+            <VisualizationBar />
         </div>
     );
 }
