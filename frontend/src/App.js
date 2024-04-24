@@ -8,6 +8,8 @@ import Listpets from "./components/Listpets/Listpets";
 import PetDetails from "./components/PetDetails/PetDetails";
 import EditPetForm from "./components/PetDetails/EditPetForm";
 import Visualization from "./components/Visualization/Visualization";
+import About from "./components/About/About";
+import ContactUs from "./components/Contact/ContactUs";
 
 // Define your custom theme
 const theme = createTheme({
@@ -27,6 +29,8 @@ function App() {
                     <Route path="/signup" element={<SignUpPage />} />
                     <Route path="/" element={<Navigate to="/login" />} />
                     <Route path="/dashboard" element={<Dashboard />} />
+                    <Route path="/about" element={<About />} />
+                    <Route path="/contact" element={<ContactUs />} />
                     <Route path="/listpets" element={<Listpets />} />
                     <Route path="/pets/:id" element={<PetDetails />} />
                     <Route path="/edit-pet/:id" element={<EditPetForm />} />

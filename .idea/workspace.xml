@@ -4,9 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="168c045f-ab5d-4b68-9bfd-19518200dc65" name="Changes" comment="adopt list">
+    <list default="true" id="168c045f-ab5d-4b68-9bfd-19518200dc65" name="Changes" comment="Added Visual wrt gender">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/Visualization/Visualization.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Visualization/Visualization.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/About/About.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/About/About.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/Visualization/VisualizationBar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Visualization/VisualizationBar.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -463,7 +465,15 @@
       <option name="project" value="LOCAL" />
       <updated>1713827972113</updated>
     </task>
-    <option name="localTasksCounter" value="49" />
+    <task id="LOCAL-00049" summary="Added Visual wrt gender">
+      <option name="closed" value="true" />
+      <created>1713833962854</created>
+      <option name="number" value="00049" />
+      <option name="presentableId" value="LOCAL-00049" />
+      <option name="project" value="LOCAL" />
+      <updated>1713833962854</updated>
+    </task>
+    <option name="localTasksCounter" value="50" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -494,7 +504,8 @@
     <MESSAGE value="Updated list pets" />
     <MESSAGE value="added feedback" />
     <MESSAGE value="adopt list" />
-    <option name="LAST_COMMIT_MESSAGE" value="adopt list" />
+    <MESSAGE value="Added Visual wrt gender" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added Visual wrt gender" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
