@@ -5,8 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="168c045f-ab5d-4b68-9bfd-19518200dc65" name="Changes" comment="edited Owner Dashboard">
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/routes/login.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/routes/login.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/Dashboard/OwnerDashboard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Dashboard/OwnerDashboard.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/PetDetails/EditPetForm.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/PetDetails/EditPetForm.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -78,14 +80,6 @@
       <workItem from="1712860267239" duration="2707000" />
       <workItem from="1713044708619" duration="12886000" />
       <workItem from="1713223718207" duration="48522000" />
-    </task>
-    <task id="LOCAL-00004" summary="Components added">
-      <option name="closed" value="true" />
-      <created>1713047504671</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1713047504671</updated>
     </task>
     <task id="LOCAL-00005" summary="Components added">
       <option name="closed" value="true" />
@@ -471,7 +465,15 @@
       <option name="project" value="LOCAL" />
       <updated>1713979234020</updated>
     </task>
-    <option name="localTasksCounter" value="53" />
+    <task id="LOCAL-00053" summary="edited Owner Dashboard">
+      <option name="closed" value="true" />
+      <created>1713983472145</created>
+      <option name="number" value="00053" />
+      <option name="presentableId" value="LOCAL-00053" />
+      <option name="project" value="LOCAL" />
+      <updated>1713983472145</updated>
+    </task>
+    <option name="localTasksCounter" value="54" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

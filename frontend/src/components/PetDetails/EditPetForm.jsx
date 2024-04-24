@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button, TextField, Card, CardContent, Typography } from '@mui/material';
 import {useNavigate, useParams} from "react-router-dom";
+import {ownerPets} from "../Dashboard/OwnerDashboard";
 
 const EditPetForm = () => {
     const { id } = useParams();
@@ -37,7 +38,7 @@ const EditPetForm = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         // Send a PATCH request to update the pet data
-        fetch(`http://localhost:4000/pets/:${id}`, {
+        fetch(`http://localhost:4000/owner/:${id}`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
@@ -46,7 +47,7 @@ const EditPetForm = () => {
         })
             .then((response) => {
                 if (response.ok) {
-                    navigate('/dashboard', { state: role });
+                    navigate('/dashboard', { state: {role, userData:ownerPets}});
                     console.log('Pet updated successfully');
                 } else {
                     console.error('Error updating pet:', response.statusText);

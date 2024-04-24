@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Button, Card, CardContent, Grid, Typography} from '@mui/material';
+import {Button, Card, CardContent, FormControl, Grid, MenuItem, Select, Typography} from '@mui/material';
 import {makeStyles} from '@mui/styles';
 import AddPetForm from "./AddPetForm";
 import {Link, useNavigate} from "react-router-dom";
@@ -20,12 +20,18 @@ const useStyles = makeStyles({
     },
 });
 
+export let [ownerPets, setOwnerPets] = []
+
 const OwnerDashboard = ({ userData }) => {
     //console.log(userData)
     const classes = useStyles();
-    const [ownerPets, setOwnerPets] = useState(userData || []);
-
+    [ownerPets, setOwnerPets] = useState(userData || []);
+    const [name, setName] = useState('');
+    const [lifeExpectancy, setLifeExpectancy] = useState('');
+    const [species, setSpecies] = useState('');
+    const [status, setStatus] = useState('');
     const navigate = useNavigate();
+    const [pets, setPets] = useState([]);
 
 
     const handleAddPet = (newPet) => {
@@ -151,6 +157,37 @@ const OwnerDashboard = ({ userData }) => {
             .catch((error) => console.error('Error:', error));
     };
 
+    const handleSearch = async () => {
+        try {
+            // Construct the URL with the search filters
+            let url = `http://localhost:4000/visual/search/:${ownerPets.ownerId}`;
+            const searchData = { name, lifeExpectancy, species, status };
+
+            // Send a POST request with search filters
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(searchData),
+            });
+
+            if (response.ok) {
+                // Get the response data
+                const searchData = await response.json();
+                console.log('Search data:', searchData);
+
+                // Update the pets list with the filtered data
+                setPets(searchData);
+            } else {
+                // Handle error
+                console.error('Error searching pets:', response.statusText);
+            }
+        } catch (error) {
+            console.error('Error searching pets:', error);
+        }
+    };
+
 
     if (!userData) {
         return <div>Loading...</div>;
@@ -164,6 +201,84 @@ const OwnerDashboard = ({ userData }) => {
             <div>
                 <Box mb={4}>
                 <Typography variant="h4" gutterBottom>My Pets</Typography>
+                    <div style={{ marginBottom: '20px' }}>
+                        <FormControl variant="outlined" style={{ marginRight: '10px' }}>
+                            <input
+                                type="text"
+                                placeholder="Search by name"
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
+                                displayEmpty
+                                style={{
+                                    padding: '10px',
+                                    fontSize: '16px',
+                                    border: '1px solid #ccc',
+                                    borderRadius: '5px',
+                                    marginBottom: '10px',
+                                    width: '200px', // Adjust width as needed
+                                }}
+                            >
+                            </input>
+                        </FormControl>
+                        <FormControl variant="outlined" style={{ marginRight: '10px' }}>
+                            <input
+                                type="text"
+                                placeholder="Search by life expectancy"
+                                value={lifeExpectancy}
+                                onChange={(e) => setLifeExpectancy(e.target.value)}
+                                displayEmpty
+                                style={{
+                                    padding: '10px',
+                                    fontSize: '16px',
+                                    border: '1px solid #ccc',
+                                    borderRadius: '5px',
+                                    marginBottom: '10px',
+                                    width: '200px', // Adjust width as needed
+                                }}
+                            >
+                            </input>
+                        </FormControl>
+                        <FormControl variant="outlined" style={{ marginRight: '10px' }}>
+                            <Select
+                                value={species}
+                                onChange={(e) => setSpecies(e.target.value)}
+                                displayEmpty
+                            >
+                                <MenuItem value="">Species</MenuItem>
+                                <MenuItem value="dog">Dog</MenuItem>
+                                <MenuItem value="cat">Cat</MenuItem>
+                            </Select>
+                        </FormControl>
+                        <FormControl variant="outlined" style={{ marginRight: '10px' }}>
+                            <Select
+                                value={status}
+                                onChange={(e) => setStatus(e.target.value)}
+                                displayEmpty
+                            >
+                                <MenuItem value="">Requested</MenuItem>
+                                <MenuItem value="withRequest">With Request</MenuItem>
+                                <MenuItem value="withoutRequest">Not Requested</MenuItem>
+                            </Select>
+                        </FormControl>
+                        <Button onClick={handleSearch} variant="contained" color="primary">Search</Button>
+                    </div>
+                    <Grid container spacing={2}>
+                        {pets.map((pet) => (
+                            <Grid item key={pet._id} xs={12} sm={6} md={4}>
+                                <Card sx={{ height: '100%' }}>
+                                    <CardContent>
+                                        <Link to={`/pets/:${pet._id}`} style={{ textDecoration: 'none' }}>
+                                            <Typography variant="h6">{pet.name}</Typography>
+                                            <Typography variant="body2" color="textSecondary">{pet.species} - {pet.breed}</Typography>
+                                            <Typography variant="body1">{pet.description}</Typography>
+                                            <Typography variant="h6" color="primary">${pet.adoption_fee}</Typography>
+                                            <Typography variant="body2" color="textSecondary">Age: {pet.age}</Typography>
+                                        </Link>
+                                    </CardContent>
+                                </Card>
+                            </Grid>
+                        ))}
+                    </Grid>
                 <Grid container spacing={3}>
                     {ownerPets && ownerPets.result && ownerPets.result.map((pet) => (
                         <Grid item key={pet._id} xs={12} sm={6} md={4}>
