@@ -5,13 +5,12 @@ import Box from "@mui/material/Box";
 
 const UserDashboardInitial = ({ userData }) => {
     const navigate = useNavigate();
-    console.log(userData)
+    //console.log(userData)
     const handleDeleteProfile = () => {
         // Send a DELETE request to delete the profile
         const requestBody = {
-            role: userData?.[0]?.role,
-            username: userData?.[0]?.username,
-            owner_id: userData?.[0]?.owner_id
+            role: userData.role,
+            personId: userData.userId
         };
 
         fetch('http://localhost:4000/login/', {
