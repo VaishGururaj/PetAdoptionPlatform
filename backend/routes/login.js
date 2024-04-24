@@ -7,10 +7,6 @@ const PetRequest = require('../models/petRequests');
 const Pets = require('../models/pets');
 const mongoose = require('mongoose');
 
-
-
-
-
 router.post('/signup', async (req, res) => {
     try {
         const { role, username, password, ...userData } = req.body;
@@ -135,7 +131,7 @@ router.delete('/', async (req, res) => {
 
 
 router.patch('/:personid', async (req, res) => {
-    const personId = req.params.personid;
+    const personId = req.params.personid.replace(':', '');
     const { role, ...userData } = req.body;
     let collectionToUpdate;
 
