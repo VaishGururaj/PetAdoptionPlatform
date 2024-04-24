@@ -27,9 +27,9 @@ const OwnerDashboard = ({ userData }) => {
     const classes = useStyles();
     [ownerPets, setOwnerPets] = useState(userData || []);
     const [name, setName] = useState('');
-    const [lifeExpectancy, setLifeExpectancy] = useState('');
+    const [expectancy, setLifeExpectancy] = useState('');
     const [species, setSpecies] = useState('');
-    const [status, setStatus] = useState('');
+    const [requested, setStatus] = useState('');
     const navigate = useNavigate();
     const [pets, setPets] = useState([]);
 
@@ -176,7 +176,7 @@ const OwnerDashboard = ({ userData }) => {
         try {
             // Construct the URL with the search filters
             let url = `http://localhost:4000/visual/search/:${ownerPets.ownerId}`;
-            const searchData = { name, lifeExpectancy, species, status };
+            const searchData = { name, expectancy, species, requested };
 
             // Send a POST request with search filters
             const response = await fetch(url, {
@@ -201,6 +201,15 @@ const OwnerDashboard = ({ userData }) => {
         } catch (error) {
             console.error('Error searching pets:', error);
         }
+    };
+
+    const handleClearSearch = () => {
+        // Reset the search fields
+        setName('');
+        setLifeExpectancy('');
+        setSpecies('');
+        setStatus('');
+        setPets([]); // Clear the pets list
     };
 
 
@@ -238,7 +247,7 @@ const OwnerDashboard = ({ userData }) => {
                             <input
                                 type="text"
                                 placeholder="Search by life expectancy"
-                                value={lifeExpectancy}
+                                value={expectancy}
                                 onChange={(e) => setLifeExpectancy(e.target.value)}
                                 displayEmpty
                                 style={{
@@ -265,16 +274,17 @@ const OwnerDashboard = ({ userData }) => {
                         </FormControl>
                         <FormControl variant="outlined" style={{ marginRight: '10px' }}>
                             <Select
-                                value={status}
+                                value={requested}
                                 onChange={(e) => setStatus(e.target.value)}
                                 displayEmpty
                             >
                                 <MenuItem value="">Requested</MenuItem>
-                                <MenuItem value="withRequest">With Request</MenuItem>
-                                <MenuItem value="withoutRequest">Not Requested</MenuItem>
+                                <MenuItem value="WithRequests">With Request</MenuItem>
+                                <MenuItem value="WithoutRequest">Not Requested</MenuItem>
                             </Select>
                         </FormControl>
                         <Button onClick={handleSearch} variant="contained" color="primary">Search</Button>
+                        <Button onClick={handleClearSearch} variant="contained" color="secondary">Clear</Button>
                     </div>
                     <Grid container spacing={2}>
                         {pets.map((pet) => (
