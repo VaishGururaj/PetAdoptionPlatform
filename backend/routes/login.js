@@ -36,7 +36,7 @@ router.post('/signup', async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 });
-
+//login a person
 router.post('/', async (req, res) => {
     try {
         const { username, password, role } = req.body;
@@ -94,9 +94,9 @@ router.delete('/', async (req, res) => {
         // Define the match stage based on the role
         let matchStage;
         if (role === "owner") {
-            matchStage = { $match: { "owner.owner_id": personId } };
+            matchStage = { $match: { "owner._id": personId } };
         } else if (role === "user") {
-            matchStage = { $match: { "user.user_id": personId } };
+            matchStage = { $match: { "user._id": personId } };
         } else {
             return res.status(400).json({ error: 'Invalid role specified' });
         }
@@ -107,9 +107,9 @@ router.delete('/', async (req, res) => {
         let idsToDelete = result.map(doc => doc._id);
         await Promise.all([
             Login.deleteMany({ _id: { $in: idsToDelete } }),
-            Owner.deleteMany({ owner_id: personId }),
+            Owner.deleteMany({_id: personId }),
             Pets.deleteMany({ owner_id: personId }),
-            User.deleteMany({ user_id: personId }),
+            User.deleteMany({ _id: personId }),
             PetRequest.deleteMany({ user_id: personId })
         ]);
 
