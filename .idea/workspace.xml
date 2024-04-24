@@ -4,11 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="168c045f-ab5d-4b68-9bfd-19518200dc65" name="Changes" comment="edited Owner Dashboard">
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+    <list default="true" id="168c045f-ab5d-4b68-9bfd-19518200dc65" name="Changes" comment="Search result">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/Dashboard/OwnerDashboard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Dashboard/OwnerDashboard.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/PetDetails/EditPetForm.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/PetDetails/EditPetForm.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -80,14 +78,6 @@
       <workItem from="1712860267239" duration="2707000" />
       <workItem from="1713044708619" duration="12886000" />
       <workItem from="1713223718207" duration="48522000" />
-    </task>
-    <task id="LOCAL-00005" summary="Components added">
-      <option name="closed" value="true" />
-      <created>1713213238497</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1713213238497</updated>
     </task>
     <task id="LOCAL-00006" summary="Components added">
       <option name="closed" value="true" />
@@ -473,7 +463,15 @@
       <option name="project" value="LOCAL" />
       <updated>1713983472145</updated>
     </task>
-    <option name="localTasksCounter" value="54" />
+    <task id="LOCAL-00054" summary="Search result">
+      <option name="closed" value="true" />
+      <created>1713988321676</created>
+      <option name="number" value="00054" />
+      <option name="presentableId" value="LOCAL-00054" />
+      <option name="project" value="LOCAL" />
+      <updated>1713988321676</updated>
+    </task>
+    <option name="localTasksCounter" value="55" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -507,7 +505,8 @@
     <MESSAGE value="Added Visual wrt gender" />
     <MESSAGE value="Added about and contact" />
     <MESSAGE value="edited Owner Dashboard" />
-    <option name="LAST_COMMIT_MESSAGE" value="edited Owner Dashboard" />
+    <MESSAGE value="Search result" />
+    <option name="LAST_COMMIT_MESSAGE" value="Search result" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

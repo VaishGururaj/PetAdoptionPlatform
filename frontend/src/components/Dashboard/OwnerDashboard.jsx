@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Button, Card, CardContent, FormControl, Grid, MenuItem, Select, Typography} from '@mui/material';
 import {makeStyles} from '@mui/styles';
 import AddPetForm from "./AddPetForm";
@@ -33,6 +33,21 @@ const OwnerDashboard = ({ userData }) => {
     const navigate = useNavigate();
     const [pets, setPets] = useState([]);
 
+
+    useEffect(() => {
+        // Fetch owner pets when component mounts or params
+        //console.log("useEffect triggered with ownerId:", ownerPets.ownerId);
+        if (ownerPets.ownerId) {
+            fetchOwnerPets(ownerPets.ownerId);
+        }
+    }, ); // Only listen to changes in params.ownerId
+
+    const fetchOwnerPets = (ownerId) => {
+        fetch(`http://localhost:4000/owner/:${ownerId}`)
+            .then(response => response.json())
+            .then(data => setOwnerPets(data))
+            .catch(error => console.error('Error fetching owner pets:', error));
+    };
 
     const handleAddPet = (newPet) => {
         // Send a POST request to add the new pet to the server
