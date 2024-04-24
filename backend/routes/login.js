@@ -5,6 +5,9 @@ const User = require('../models/users');
 const Login = require('../models/login');
 const PetRequest = require('../models/petRequests');
 const Pets = require('../models/pets');
+const mongoose = require('mongoose');
+
+
 
 
 
@@ -93,23 +96,33 @@ router.delete('/', async (req, res) => {
 
         // Define the match stage based on the role
         let matchStage;
+        let model;
         if (role === "owner") {
-            matchStage = { $match: { "owner._id": personId } };
+            matchStage = { $match: { "_id": new mongoose.Types.ObjectId(personId) } };
+            model = Owner;
         } else if (role === "user") {
-            matchStage = { $match: { "user._id": personId } };
+            matchStage = { $match: { "_id": new mongoose.Types.ObjectId(personId) } };
+            model = User;
         } else {
             return res.status(400).json({ error: 'Invalid role specified' });
         }
         deletePipeline.push(matchStage);
-        deletePipeline.push({ $project: { _id: 1 } });
 
-        let result = await Login.aggregate(deletePipeline);
-        let idsToDelete = result.map(doc => doc._id);
+        // Get the username from the matched document
+        deletePipeline.push({ $lookup: { from: "logins", localField: "username", foreignField: "username", as: "login" } });
+        deletePipeline.push({ $unwind: "$login" });
+        deletePipeline.push({ $project: { "login.username": 1 } });
+
+        let result = await model.aggregate(deletePipeline);
+        console.log(result)
+        let usernamesToDelete = result.map(doc => doc.login.username);
+        console.log(usernamesToDelete)
+        await Login.deleteMany({ username: { $in: usernamesToDelete } });
         await Promise.all([
-            Login.deleteMany({ _id: { $in: idsToDelete } }),
-            Owner.deleteMany({_id: personId }),
+            Login.deleteMany({ username: { $in: usernamesToDelete } }),
+            Owner.deleteMany({ username: { $in: usernamesToDelete } }),
             Pets.deleteMany({ owner_id: personId }),
-            User.deleteMany({ _id: personId }),
+            User.deleteMany({ username: { $in: usernamesToDelete } }),
             PetRequest.deleteMany({ user_id: personId })
         ]);
 
@@ -118,6 +131,7 @@ router.delete('/', async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 });
+
 
 
 router.patch('/:personid', async (req, res) => {
