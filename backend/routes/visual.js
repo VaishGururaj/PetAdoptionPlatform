@@ -158,6 +158,18 @@ router.post('/search/:personid', async (req, res) => {
         matchedBreeds: { $ne: [] } // Filter out documents without matched breeds
       }
     });
+    pipeline.push({
+      $project: {
+        _id: 1,
+        age: 1,
+        name: 1,
+        gender: 1,
+        species: 1,
+        description: 1,
+        adoption_fee: 1,
+        photo_image: 1,
+      }
+    });
   }
 
   if (requested && requested === 'WithRequests') {
