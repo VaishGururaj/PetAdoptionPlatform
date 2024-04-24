@@ -5,9 +5,7 @@ const User = require('../models/users');
 const Login = require('../models/login');
 const PetRequest = require('../models/petRequests');
 const Pets = require('../models/pets');
-const mongoose = require('mongoose');
-
-
+const {Types} = require("mongoose");
 
 
 
@@ -98,10 +96,10 @@ router.delete('/', async (req, res) => {
         let matchStage;
         let model;
         if (role === "owner") {
-            matchStage = { $match: { "_id": new mongoose.Types.ObjectId(personId) } };
+            matchStage = { $match: { "_id": new Types.ObjectId(personId) } };
             model = Owner;
         } else if (role === "user") {
-            matchStage = { $match: { "_id": new mongoose.Types.ObjectId(personId) } };
+            matchStage = { $match: { "_id": new Types.ObjectId(personId) } };
             model = User;
         } else {
             return res.status(400).json({ error: 'Invalid role specified' });
@@ -131,7 +129,6 @@ router.delete('/', async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 });
-
 
 
 router.patch('/:personid', async (req, res) => {
