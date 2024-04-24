@@ -5,7 +5,7 @@ const User = require('../models/users');
 const Login = require('../models/login');
 const PetRequest = require('../models/petRequests');
 const Pets = require('../models/pets');
-const mongoose = require('mongoose');
+const {Types} = require('mongoose');
 
 router.post('/signup', async (req, res) => {
     try {
