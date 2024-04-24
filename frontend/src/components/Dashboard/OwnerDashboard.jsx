@@ -211,10 +211,9 @@ const OwnerDashboard = ({ userData }) => {
     return (
         <div>
             <Typography variant="h4" gutterBottom>Owner Dashboard</Typography>
-            <AddPetForm onAdd={handleAddPet} />
             <Button onClick={handleDeleteProfile} variant="contained" color="error">Delete Profile</Button>
             <div>
-                <Box mb={4}>
+                <Box mb={4} pt={2}>
                 <Typography variant="h4" gutterBottom>My Pets</Typography>
                     <div style={{ marginBottom: '20px' }}>
                         <FormControl variant="outlined" style={{ marginRight: '10px' }}>
@@ -294,6 +293,9 @@ const OwnerDashboard = ({ userData }) => {
                             </Grid>
                         ))}
                     </Grid>
+                    <br></br>
+            <AddPetForm onAdd={handleAddPet} />
+            <br></br>
                 <Grid container spacing={3}>
                     {ownerPets && ownerPets.result && ownerPets.result.map((pet) => (
                         <Grid item key={pet._id} xs={12} sm={6} md={4}>
