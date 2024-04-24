@@ -101,16 +101,16 @@ router.delete('/', async (req, res) => {
             return res.status(400).json({ error: 'Invalid role specified' });
         }
         deletePipeline.push(matchStage);
-        deletePipeline.push({ $project: { _id: 1 } });
+        deletePipeline.push({ $project: { username: 1 } });
 
         let result = await Login.aggregate(deletePipeline);
-        let idsToDelete = result.map(doc => doc._id);
+        let idsToDelete = result.map(doc => doc.username);
         await Promise.all([
-            Login.deleteMany({ _id: { $in: idsToDelete } }),
+            Login.deleteMany({username: { $in: idsToDelete } }),
             Owner.deleteMany({_id: personId }),
-            Pets.deleteMany({ owner_id: personId }),
-            User.deleteMany({ _id: personId }),
-            PetRequest.deleteMany({ user_id: personId })
+            Pets.deleteMany({owner_id: personId }),
+            User.deleteMany({_id: personId }),
+            PetRequest.deleteMany({user_id: personId })
         ]);
 
         res.status(200).json({ message: 'Person deleted successfully' });
