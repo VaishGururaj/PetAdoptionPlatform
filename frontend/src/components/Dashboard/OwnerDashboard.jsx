@@ -30,20 +30,35 @@ const OwnerDashboard = ({ userData }) => {
 
     const handleAddPet = (newPet) => {
         // Send a POST request to add the new pet to the server
-        fetch(`http://localhost:4000/owner/:${ownerPets?.[0]?.owner_id}`, {
+        fetch(`http://localhost:4000/owner/:${ownerPets.ownerId}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(newPet),
         })
-            .then((response) => response.json())
-            .then((data) => {
-                setOwnerPets((prevOwnerPets) => {
-                    return [...prevOwnerPets, data];
-                });
+            .then((response) => {
+                if (response.ok) {
+                    // Fetch the updated list of pets after successful deletion
+                    //console.log("After deleting: ", ownerPets);
+                    return fetch(`http://localhost:4000/owner/:${ownerPets.ownerId}`);
+                } else {
+                    throw new Error('Error deleting pet');
+                }
             })
-            .catch((error) => console.error('Error adding pet:', error));
+            .then((response) => {
+                if (response.ok) {
+                    // Parse the response data
+                    return response.json();
+                } else {
+                    throw new Error('Error fetching updated pet list');
+                }
+            })
+            .then((data) => {
+                // Update the state with the new list of pets
+                setOwnerPets(data);
+            })
+            .catch((error) => console.error('Error:', error));
     };
 
     const handleConfirmRequest = (requestId) => {
@@ -82,13 +97,13 @@ const OwnerDashboard = ({ userData }) => {
 
     const handleDeleteProfile = () => {
         // Send a DELETE request to delete the profile
+        console.log(ownerPets)
         const requestBody = {
-            role: userData?.[0]?.role,
-            username: userData?.[0]?.username,
-            owner_id: userData?.[0]?.owner_id
+            role: ownerPets.role,
+            personId: ownerPets.ownerId
         };
 
-        fetch('http://localhost:4000/login/', {
+        fetch(`http://localhost:4000/login`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
